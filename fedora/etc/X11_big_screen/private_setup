@@ -1,0 +1,83 @@
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "pl"
+EndSection
+
+Section "Files"
+	ModulePath   "/usr/lib64/nvidia/xorg"
+	ModulePath   "/usr/lib64/xorg/modules"
+EndSection
+
+Section "ServerLayout"
+	Identifier     "serverLayout0"
+	Screen      0  "Screen-laptop" 0 0
+	Screen         "Screen-samsung" RightOf "Screen-laptop"
+	Option	    "BlankTime" "200"
+	Option	    "StandbyTime" "200"
+	Option	    "SuspendTime" "200"
+	Option	    "OffTime" "200"
+	Option	    "AllowEmptyInput" "no"
+EndSection
+
+Section "Module"
+	Load  "evdev"
+EndSection
+
+Section "ServerFlags"
+	Option	    "AIGLX" "off"
+	Option	    "Xinerama" "off"
+EndSection
+
+Section "Monitor"
+	Identifier   "Monitor-laptop"
+	Option	    "DPMS" "true"
+EndSection
+
+Section "Monitor"
+	Identifier   "Monitor-samsung"
+	Option	    "DPMS" "true"
+EndSection
+
+Section "Device"
+	Identifier  "Device-0"
+	Driver      "nvidia"
+EndSection
+
+Section "Device"
+	Identifier  "Device-1"
+	Driver      "nvidia"
+	Screen      1
+EndSection
+
+Section "Screen"
+	Identifier "Screen-laptop"
+	Device     "Device-0"
+	Monitor    "Monitor-laptop"
+	DefaultDepth     24
+	SubSection "Display"
+		Viewport   0 0
+		Depth     24
+	EndSubSection
+EndSection
+
+Section "Screen"
+	Identifier "Screen-samsung"
+	Device     "Device-1"
+	Monitor    "Monitor-samsung"
+	DefaultDepth     24
+	SubSection "Display"
+		Viewport   0 0
+		Depth     24
+	EndSubSection
+EndSection
+
+Section "DRI"
+	Group        "video"
+	Mode         0660
+EndSection
+
+#Section "Extensions"
+#	Option	    "Composite" "true"
+#EndSection
+

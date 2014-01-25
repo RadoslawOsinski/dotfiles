@@ -1,0 +1,81 @@
+background yes
+use_xft yes
+xftalpha 1
+update_interval 1.0
+total_run_times 0
+own_window yes
+# If own_window is yes, you may use type normal, desktop or override
+own_window_type normal
+#own_window_argb_visual yes
+#own_window_argb_value 0
+own_window_transparent yes
+own_window_colour red
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer true
+# Minimum size of text area
+minimum_size 240 5
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders true
+stippled_borders 8
+#border_margin 4
+border_inner_margin 4
+border_width 1
+default_color grey
+alignment top_left
+gap_x 1150
+gap_y 30
+no_buffers true
+uppercase no
+override_utf8_locale true
+use_spacer none
+  
+TEXT
+${color slate grey}${font :size=9}$nodename - $sysname $kernel on $machine
+${color slate grey}Battery: ${color white}${battery}${color slate grey}  Battery time: ${color white}${battery_time}
+${color slate grey}Uptime:${color white} $uptime ${color slate grey} Processes:${color white} $processes  ${color slate grey}Running: ${color white}$running_processes
+${color slate grey}${hr 1}
+
+${color slate grey}CPU 1: ${color white}${freq_g cpu1}GHz ==> ${cpu cpu1}%    $alignc${color slate grey}Temp:${color white}$acpitemp C${alignr}${color slate grey}CPU 2 $alignr${color white}${freq_g cpu2}GHz ==> ${cpu cpu2}%
+${color red}${cpugraph cpu1 30,220 5555aa 3333bb} $alignr${color red}${cpugraph cpu2 30,220 5555aa 3333bb}
+${color slate grey}CPU 3: ${color white}${freq_g cpu3}GHz ==> ${cpu cpu3}%    $alignc${color slate grey}Temp:${color white}$acpitemp C${alignr}${color slate grey}CPU 4 $alignr${color white}${freq_g cpu4}GHz ==> ${cpu cpu4}%
+${color red}${cpugraph cpu3 30,220 5555aa 3333bb} $alignr${color red}${cpugraph cpu4 30,220 5555aa 3333bb}
+${color slate grey}${hr 1}
+
+${color slate grey}RAM: ${color white}$mem / $memmax ==> $memperc%${alignr}${color slate grey}SWAP: ${color white}$swap / $swapmax ==> $swapperc%
+${color c54507}${membar 15,220}${alignr}${color c54507}${swapbar 15,220}
+${color slate grey}${hr 1}
+
+${color slate grey}${color slate grey}Read: ${color white}${diskio_read}${alignr}Write: ${diskio_write}
+${color purple}${diskiograph_read 30, 220}$alignr${diskiograph_write 30, 220}
+${color slate grey}Memory buffered: ${color white}${buffers}${color slate grey}${alignr}Memory cached: ${color white}${cached}
+${color slate grey}${hr 1}
+
+${color slate grey}Networking wire:  ${color white} IP: ${addr p5p1}  
+${color slate grey}Total Down: ${color white} ${totaldown p5p1}${alignr}${color slate grey}Total Upload: ${color white} ${totalup p5p1}
+${color slate grey}Down:${color white} ${downspeed p5p1} ${color slate grey} k/s${alignr}Up:${color white} ${upspeed p5p1} ${color slate grey}k/s
+${color green}${downspeedgraph p5p1 30,220}${alignr}${color green}${upspeedgraph p5p1 30,220}
+
+${color slate grey}Networking wireless:  ${color white} IP: ${addr wlp3s0}  
+${color slate grey}Total Down: ${color white} ${totaldown wlp3s0}${alignr}${color slate grey}Total Upload: ${color white} ${totalup wlp3s0}
+${color slate grey}Down:${color white} ${downspeed wlp3s0} ${color slate grey} k/s${alignr}Up:${color white} ${upspeed wlp3s0} ${color slate grey}k/s
+${color green}${downspeedgraph wlp3s0 30,220}${alignr}${color green}${upspeedgraph wlp3s0 30,220}
+
+${color slate grey}Available entropy for crypt: ${color white}${entropy_avail}/${entropy_poolsize}
+
+${color slate grey}${hr 1}
+
+${color slate grey}/$alignr${color white}${fs_used /} / ${fs_size /} ${color green}${fs_bar 6,180 /}
+${color slate grey}/home/radek$alignr${color white}${fs_used /home/radek} / ${fs_size /home/radek} ${color green}${fs_bar 6,180 /home/radek}
+${color slate grey}${hr 1}
+${color slate grey}TOP CPU 1. ${color white}${top name 1} ${color slate grey}with PID ${color white}${top pid 1} ${color slate grey}${alignr}uses ${color white}${top cpu 1} ${color slate grey}% of CPU
+${color slate grey}TOP CPU 2. ${color white}${top name 2} ${color slate grey}with PID ${color white}${top pid 2} ${color slate grey}${alignr}uses ${color white}${top cpu 2} ${color slate grey}% of CPU
+${color slate grey}TOP CPU 3. ${color white}${top name 3} ${color slate grey}with PID ${color white}${top pid 3} ${color slate grey}${alignr}uses ${color white}${top cpu 3} ${color slate grey}% of CPU
+${color slate grey}TOP CPU 4. ${color white}${top name 4} ${color slate grey}with PID ${color white}${top pid 4} ${color slate grey}${alignr}uses ${color white}${top cpu 4} ${color slate grey}% of CPU
+
+${color slate grey}TOP MEM 1. ${color white}${top_mem name 1} ${color slate grey}with PID ${color white}${top_mem pid 1} ${color slate grey}${alignr}uses ${color white}${top_mem mem 1} ${color slate grey}% of MEM
+${color slate grey}TOP MEM 2. ${color white}${top_mem name 2} ${color slate grey}with PID ${color white}${top_mem pid 2} ${color slate grey}${alignr}uses ${color white}${top_mem mem 2} ${color slate grey}% of MEM
+${color slate grey}TOP MEM 3. ${color white}${top_mem name 3} ${color slate grey}with PID ${color white}${top_mem pid 3} ${color slate grey}${alignr}uses ${color white}${top_mem mem 3} ${color slate grey}% of MEM
+${color slate grey}TOP MEM 4. ${color white}${top_mem name 4} ${color slate grey}with PID ${color white}${top_mem pid 4} ${color slate grey}${alignr}uses ${color white}${top_mem mem 4} ${color slate grey}% of MEM
