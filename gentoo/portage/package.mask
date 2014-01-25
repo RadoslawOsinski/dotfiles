@@ -1,0 +1,10 @@
+=x11-base/xorg-server-1.11.2-r2
+=dev-libs/totem-pl-parser-2.32.6-r1
+=net-libs/gtk-vnc-0.4.4
+=net-misc/curl-7.24.0
+=dev-java/xom-1.2.6-r1
+=x11-drivers/ati-drivers-12.6_beta
+>=sys-kernel/gentoo-sources-3.4.2
+>=sys-boot/grub-1
+=x11-base/xorg-server-1.12.2
+=dev-java/oracle-jdk-bin-1.7.0.5-r1

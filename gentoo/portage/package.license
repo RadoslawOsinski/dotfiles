@@ -1,0 +1,14 @@
+www-plugins/adobe-flash AdobeFlash-10.3
+net-wireless/broadcom-sta Broadcom
+dev-java/sun-jdk dlj-1.1
+dev-java/sun-jdk Oracle-BCLA-JavaSE
+dev-java/oracle-jdk-bin Oracle-BCLA-JavaSE
+app-emulation/emul-linux-x86-java Oracle-BCLA-JavaSE
+app-emulation/virtualbox-bin PUEL
+dev-java/ibm-jdk-bin IBM-J1.6
+dev-java/sun-jce-bin sun-bcla-java-vm
+dev-java/sun-jce-bin dlj-1.1
+net-im/skype skype-eula skype-4.0.0.7-copyright
+dev-java/ibm-jdk-bin IBM-J1.5
+app-emulation/emul-linux-x86-java dlj-1.1
+www-client/google-chrome google-chrome
