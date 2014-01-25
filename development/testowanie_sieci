@@ -1,0 +1,2 @@
+strace -f ./mgmt 2>&1 | egrep "listen|accept|bind|socket|close" 
+np. pozwala zoriętować się że gniazdo zamkniętę przed funkcją accept

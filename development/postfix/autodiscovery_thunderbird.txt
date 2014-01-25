@@ -1,0 +1,35 @@
+Thunderbird!
+===========================================================
+root@machine:/var/www/test.com# pwd
+/var/www/test.com
+root@machine:/var/www/test.com# cat .well-known/autoconfig/mail/config-v1.1.xml 
+<?xml version="1.0"?>
+<clientConfig version="1.1">
+    <emailProvider id="test.com">
+    <domain>test.com</domain>
+
+    <displayName>test</displayName>
+    <displayShortName>test mail</displayShortName>
+
+    <incomingServer type="pop3">
+         <hostname>mail.test.pl</hostname>
+         <port>995</port>
+         <socketType>SSL</socketType>
+         <username>%EMAILADDRESS%</username>
+         <authentication>password-cleartext</authentication>
+    </incomingServer>
+
+    <outgoingServer type="smtp">
+         <hostname>mail.test.pl</hostname>
+         <port>485</port>
+         <socketType>SSL</socketType>
+         <username>%EMAILADDRESS%</username>
+         <authentication>password-cleartext</authentication>
+    </outgoingServer>
+
+    </emailProvider>
+
+</clientConfig>
+root@machine:/var/www/test.com# 
+
+=======================================================

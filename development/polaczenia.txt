@@ -1,0 +1,8 @@
+Aktywne połączenia:
+netstat -atn | grep 5432  | wc -l
+
+Nawiązane połączenia:
+netstat -atn | grep 5432  | grep EST | wc -l
+
+Aktywne połączenie poprzez procesy:
+ps -A

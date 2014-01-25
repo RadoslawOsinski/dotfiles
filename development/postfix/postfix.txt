@@ -1,0 +1,11 @@
+Sprawdzanie liczby maili w kolejce:
+postqueue -p
+
+Wylistowanie ID maili do usuniecia!
+postqueue -p | egrep -v '^ *\(|-Queue ID-' | awk 'BEGIN { RS = "" } { if ($7 == "biuro@test.pl") print $1} ' | tr -d '*!'
+
+Czytanie maila:
+postcat -q MESSAGE_ID
+
+Usuwanie maili z kolejki na podstawie nadawcy maila:
+postqueue -p | egrep -v '^ *\(|-Queue ID-' | awk 'BEGIN { RS = "" } { if ($7 == "biuro@test.pl") print $1} ' | tr -d '*!' | postsuper -d -

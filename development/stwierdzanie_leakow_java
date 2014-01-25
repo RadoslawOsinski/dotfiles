@@ -1,0 +1,13 @@
+Dodać do opcji wirtualnej maszyny parametry:
+-verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails
+Wtedy otrzymam na terminalu działanie garbage collectora.
+
+Aby zrobić heap dumpa należy dodać do parametrów (z wyświetleniem GC):
+-verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError
+
+Pozwoli mi to później analizować pamięć przez MAT(Memory Analizer ....)
+
+
+---------------
+Dla uruchomienia jconsole:
+przekazuje do VM parametr "-Dcom.sun.management.jmxremote"

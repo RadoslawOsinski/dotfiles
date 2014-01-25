@@ -1,0 +1,7 @@
+sed -i 's/id-zest-swiad="*"/id-zest-swiad=\"100000000241\"/g' 1.xml
+radek@rmo ~/zoz $ sed -i
+'s/id-zest-swiad=\"[0-9]*\"/id-zest-swiad=\"100000000241\"/g' 1.xml
+radek@rmo ~/zoz $ sed -i
+'s/id-poz-rozlicz=\"[0-9]*\"/id-poz-rozlicz=\"100000000241\"/g' 1.xml
+radek@rmo ~/zoz $ sed -i 's/id-swiad=\"[0-9]*\"/id-swiad=\"100000000241\"/g'
+1.xml

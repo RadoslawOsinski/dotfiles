@@ -1,0 +1,67 @@
+CheckStyle Introduction
+
+Checkstyle is going to be the tool we use for enforcing out code style at repository level.
+There are good valid reasons for using it.
+1) Very comprehensive way of controlling the code style. It does come with standard Sun code style enforcement. But one can always modify the XML file to relax or change the standard.
+2) It doesn't change the code. It just enforce the check and tells you what are the violation. This is exactly what we want. We could have used Jalopy. But it simply modifies the code which is being enforced. The ownership of the code still belongs to programmer. So we just wants to check the code style and tell the programmer about the violation. That's it.
+3) Of course its open source
+4) Better way for automation. Easy to integrate with Maven and Ant.
+5) More importantly the subversion checker framework supports it nicely !
+
+So lets get a hand-on experience now.
+
+1) Download the checkstyle distribution from http://checkstyle.sourceforge.net . I use the version 5.0
+2) Create a sample project with src directory and add a few java classes. (Idea : Better you copy your file templates from your IDE and use them here. Once you format, you can copy them back and use !)
+3) Now just try to enforce Sun code style with your sample src
+
+java -jar checkstyle-all-5.0.jar -c <checkstyle-dir>/sun_checks.xml -r <sample-project-dir>/src
+
+This command will just traverse through src directory and check the code style of java classes against the sun_checks.xml standard. sun_checks.xml is the sample file given by CheckStyle which has the sun standards configured.
+
+4) Now we are comfortably placed in writing the svn hooker to enforce this check.
+
+Subversion, Subversion Hooker and Subversioncheker 
+
+In this section we will see how this checkstyle command can be configured in Subversion so that for each commit the checksyle will be enforced. Subversion provides an excellent flexibility for doing this. Those who have already worked on Subversion knows, if we commit a source without commit message eventually the commit will fail. This setting is done through a hooker. You can get more information here.
+
+So lets write our hooker and test the work. Since svn repository would have been already setup in your environment and its a System Admin job, I recommend you to use this very simple steps to setup your svn repository without further delay (If you don't have it already).
+
+Now I assume, you must have setup your subversion with your sample project, started the svn server daemon and checkout the sample project to another directory !
+
+Now its time to write our svn hooker script. There is a good framework called svnchecker to write svn hooker scripts easily. Download the 0.3 version from here. (The project is renamed to Repoguard with no release yet !)
+
+Now writing svn hooker is very simple. Follow these steps
+
+1) Go to your svnrepos/hooks directory (This is the directory where we have our svn hooks)
+2) Copy the pre-commit.tmpl file to pre-commit (Provided you haven't done it so far)
+3) Add the following command before the "exit 0" line
+<svnchecker-0.3-dir>/Main.py PreCommit $REPOS $TXN || exit 1
+
+4) svnchecker needs a configuration file named svncheckerconfig.ini for the relevant configurations. The file can be inside the hooker directory itself. Add the following settings inside that file.
+
+[Default]
+#This property tells Subversionchecker about all checks
+#(UnitTests, AccessRights, XMLValidator etc) it should execute.
+#Separated with comma (",")
+Main.PreCommitChecks=Checkstyle
+
+#Path of java executable to run Checkstyle command
+Checkstyle.Java=java
+
+#Classpath for executing Checkstyle rules
+Checkstyle.Classpath=<checkstyle-dir>/checkstyle-all-5.0.jar
+
+#Configuration file for Checkstyle to run its rules.
+Checkstyle.ConfigFile=/sun_checks.xml
+
+#In case of failures, where should Subversionchecker redirect the errors
+Checkstyle.FailureHandlers=Console
+
+5) Now you restart the svn daemon again
+
+6) Try to commit the checkout sources with changes. Or add a new java class now and see whether your commit fails if the code is not adhere to sun java standard. Your commits will eventually fails !
+
+Client side tips :
+1) Tune your IDE to make use of sun check style. Right now IntelliJ IDEA has a plug-in for Checkstyle. You can use it. But the IDEA reformatter doesn't support importing checkstyle. So you may have to manually modify the IDEA code style to sync with sun style or vice-versa.
+
+Now give your developers hard time :)

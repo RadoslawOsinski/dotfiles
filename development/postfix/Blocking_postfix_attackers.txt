@@ -1,0 +1,47 @@
+# BLOCK COUNTRY ATTACKS
+#####################################################
+# Asia
+iptables -A INPUT -s 220.0.0.0/8 -j DROP
+iptables -A INPUT -s 58.0.0.0/8 -j DROP
+iptables -A INPUT -s 61.0.0.0/8 -j DROP
+iptables -A INPUT -s 218.0.0.0/8 -j DROP
+iptables -A INPUT -s 124.0.0.0/8 -j DROP
+iptables -A INPUT -s 126.0.0.0/8 -j DROP
+iptables -A INPUT -s 168.208.0/16 -j DROP
+iptables -A INPUT -s 196.192.0/16 -j DROP
+iptables -A INPUT -s 202.0.0.0/8 -j DROP
+iptables -A INPUT -s 210.0.0.0/8 -j DROP
+iptables -A INPUT -s 218.0.0.0/8 -j DROP
+iptables -A INPUT -s 222.0.0.0/8 -j DROP
+# Africa
+iptables -A INPUT -s 41.0.0.0/8 -j DROP
+# Brazil and Argentina
+iptables -A INPUT -s 189.0.0.0/8 -j DROP
+iptables -A INPUT -s 190.0.0.0/8 -j DROP
+iptables -A INPUT -s 200.0.0.0/8 -j DROP
+iptables -A INPUT -s 201.0.0.0/8 -j DROP
+# China
+iptables -A INPUT -s 62.0.0.0/8 -j DROP
+iptables -A INPUT -s 77.0.0.0/8 -j DROP
+iptables -A INPUT -s 78.0.0.0/8 -j DROP
+iptables -A INPUT -s 79.0.0.0/8 -j DROP
+iptables -A INPUT -s 130.0.0.0/8 -j DROP
+iptables -A INPUT -s 131.0.0.0/8 -j DROP
+
+iptables -A INPUT -s 137.0.0.0/8 -j DROP
+iptables -A INPUT -s 146.0.0.0/8 -j DROP
+iptables -A INPUT -s 147.0.0.0/8 -j DROP
+iptables -A INPUT -s 150.0.0.0/8 -j DROP
+# Indonesia
+iptables -A INPUT -s 58.0.0.0/8 -j DROP
+iptables -A INPUT -s 60.0.0.0/8 -j DROP
+iptables -A INPUT -s 113.0.0.0/8 -j DROP
+iptables -A INPUT -s 114.0.0.0/8 -j DROP
+iptables -A INPUT -s 116.0.0.0/8 -j DROP
+iptables -A INPUT -s 117.0.0.0/8 -j DROP
+iptables -A INPUT -s 118.0.0.0/8 -j DROP
+iptables -A INPUT -s 119.0.0.0/8 -j DROP
+iptables -A INPUT -s 120.0.0.0/8 -j DROP
+iptables -A INPUT -s 121.0.0.0/8 -j DROP
+iptables -A INPUT -s 122.0.0.0/8 -j DROP
+iptables -A INPUT -s 123.0.0.0/8 -j DROP

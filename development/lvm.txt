@@ -1,0 +1,177 @@
+Creating bigger image size for kvm/qemu (http://itsignals.cascadia.com.au/?p=28):
+
+Stop the VM
+Step 2: Change to the directory where your VM image files are stored, mine is in /kvm/ubuntu-dev/
+cd /kvm/ubuntu-dev
+Here is what my 20GB file looks like.
+Step 3: Backup the image file, my image file is called ubuntu-dev.img. I created a sub-directory called bak where I store my image backup file
+sudo cp ubuntu-dev.img bak/ubuntu-dev.img.bak
+Step 4: Create a blank qemu file, this is the file we will be adding to our VM image. Create it with a size equal to the amount of extra disk space you want added to your VM. In my case I want to add an additional 30GB of space.
+sudo qemu-img create -f raw addon.raw 30G
+Step 5: Rename the original image file to .save as is shown in the image above. We never actually modify the original image file so we end up with two backup files, the .save as well as the backup file we created in Step 3, just in case something goes wrong. When you are sure everything has worked you can always delete these files.
+Step 6: We are now ready to combine the image file with the new blank qemu file we created earlier. You need to be logged in as the super user to perform this step.
+su
+cat ubuntu-dev.img.save addon.raw >> ubuntu-dev.img
+Step 7: Once this completes you can check the new file size, my new file size is now 50GB which is my original 20GB + 30GB of extra space.
+Step 8: We have successfully increased the size of our image file by 30GB to 50GB, now we need to fix our partitions. To do this you need to downloaded GParted and create a live CD. Once you have created the CD and loaded into your machine run the following command to start GParted using the new image file.
+sudo qemu -hda ubuntu-dev.img -cdrom /dev/cdrom -boot d
+
+Resizing lvm (http://www.debian-administration.org/articles/410):
+Creating A Volume Group
+
+To use LVM you need to take at least one partition, initialise it for use with LVM and then include it in a volume group. Why would you do this? Well it would let you create new partitions on the fly, and make better use of your space.
+
+In my case I have a laptop with the following setup:
+
+    Name        Flags      Part Type  FS Type          [Label]        Size (MB)
+ ------------------------------------------------------------------------------
+    hda1        Boot        Primary   Linux ext3       [/]              8000.01 
+    hda2                    Primary   Linux swap / Solaris              1000.20
+    hda3                    Primary   Linux                            31007.57
+Here I have a 7Gb root partition which contains my Debian GNU/Linux installation. I also have a 28Gb partition which will be used by LVM. I've chosen this setup so that I can create a dedicated /home partition using LVM - and if I need more space I can extend it.
+
+In this example hda1, hda2, and hda3 are all physical volumes. We'll initialize hda3 as a physical volume:
+
+root@lappy:~# pvcreate /dev/hda3
+If you wanted to combine several disks, or partitions you could do the same for those:
+
+root@lappy:~# pvcreate /dev/hdb
+root@lappy:~# pvcreate /dev/hdc
+Once we've initialised the partitions, or drives, we will create a volume group which is built up of them:
+
+root@lappy:~# vgcreate skx-vol /dev/hda3
+Here "skx-vol" is the name of the volume group. (If you wanted to create a single volume spanning two disks you'd run "vgcreate skx-vol /dev/hdb /dev/hdc".)
+
+If you've done this correctly you'll be able to see it included in the output of vgscan:
+
+root@lappy:~# vgscan
+  Reading all physical volumes.  This may take a while...
+  Found volume group "skx-vol" using metadata type lvm2
+Now that we have a volume group (called skx-vol) we can actually start using it.
+
+Working with logical volumes
+
+What we really want to do is create logical volumes which we can mount and actually use. In the future if we run out of space on this volume we can resize it to gain more storage. Depending on the filesystem you've chosen you can even do this on the fly!
+
+For test purposes we'll create a small volume with the name 'test':
+
+root@lappy:~# lvcreate -n test --size 1g skx-vol
+Logical volume "test" created
+This command creates a volume of size 1Gb with the name test hosted on the LVM volume group skx-vol.
+
+The logical volume will now be accessible via /dev/skx-vol/test, and may be formatted and mounted just like any other partition:
+
+root@lappy:~# mkfs.ext3 /dev/skx-vol/test
+root@lappy:~# mkdir /home/test
+root@lappy:~# mount /dev/skx-vol/test  /home/test
+Cool, huh?
+
+Now we get onto the fun stuff. Let us pretend that the test partition is full and we want to make it bigger. First of all we can look at how big it is at the moment with lvdisplay:
+
+root@lappy:~# lvdisplay 
+  --- Logical volume ---
+  LV Name                /dev/skx-vol/test
+  VG Name                skx-vol
+  LV UUID                J5XlaT-e0Zj-4mHz-wtET-P6MQ-wsDV-Lk2o5A
+  LV Write Access        read/write
+  LV Status              available
+  # open                 0
+  LV Size                1.00 GB
+  Current LE             256
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     0
+  Block device           254:0
+   
+We see it is 1Gb in size (no suprise really!) before we go on to resize the volume remember we should unmount it first:
+
+root@lappy:~# umount  /home/test/
+root@lappy:~# lvextend -L+1g /dev/skx-vol/test 
+Extending logical volume test to 2.00 GB
+Logical volume test successfully resized
+(It is possible to resize ext3 filesystems whilst they're mounted, but I'd still suggest doing it offline as that is less scary.)
+
+Looking at lvdisplay again we can see the volume was resized:
+
+root@lappy:~# lvdisplay 
+  --- Logical volume ---
+  LV Name                /dev/skx-vol/test
+  VG Name                skx-vg
+  LV UUID                uh7umg-7DqT-G2Ve-nNSX-03rs-KzFA-4fEwPX
+  LV Write Access        read/write
+  LV Status              available
+  # open                 0
+  LV Size                2.00 GB
+  Current LE             512
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     0
+  Block device           254:0
+The important thing to realise is that although the volume has been resized the ext3 filesystem on it has stayed unchanged. We need to resize the filesystem to actually fill the volume:
+
+root@lappy:~# e2fsck -f /dev/skx-vol/test 
+root@lappy:~# resize2fs /dev/skx-vol/test
+Remount the logical volume and you'll discover it is now only half full instead of completely full!
+
+If you get bored of the volume and its contents you can remove it with the lvremove command:
+
+root@lappy:~# lvremove /dev/skx-vol/test
+Do you really want to remove active logical volume "test"? [y/n]: y
+Logical volume "test" successfully removed
+Other userful commands include lvrename to change the name, and lvreduce to reduce the size of a volume.
+
+Mounting Logical Volumes
+
+In the previous section we showed how you could mount a logical volume, with a command like this:
+
+mount /dev/skx-vol/test  /home/test
+If you want your partition to be mounted at boot-time you should update your /etc/fstab to contain an entry like this:
+
+/dev/skx-vol/home    /home       ext3  noatime  0 2
+/dev/skx-vol/backups /backups    ext3  noatime  0 2
+Meta-Data
+
+If you're worried about losing details about your volumes in the event of problems do not worry. The current state of the LVM setup upon your machine is maintained in the event of errors.
+
+Running pvdisplay will allow you to see which physical volume(s) make up your volume group. In the case of our example we only used /dev/hda3, but if you're using more volumes it might be useful to take a look at them with the pvdisplay command:
+
+root@lappy:~# pvdisplay 
+  --- Physical volume ---
+  PV Name               /dev/hda3
+  VG Name               skx-vol
+  PV Size               28.88 GB / not usable 0   
+  Allocatable           yes 
+  PE Size (KByte)       4096
+  Total PE              7392
+  Free PE               5280
+  Allocated PE          2112
+  PV UUID               WyXQtL-OdT6-GnGd-edKF-tjRU-hoLA-RJuQ6x
+If we ever lost this information we could find it contained in the file /etc/lvm/backup/skx-vol.
+
+Similarly if we wanted to know which logical volumes we'd created we could example the directory /etc/lvm/archive. This contains numbered files containing backups of the operations we've conducted.
+
+As an example we created the "test" volume, which we went on to resize. Here is the first section of /etc/lvm/archive/skx-vol_000009.vg:
+
+# Generated by LVM2: Sat Jun 10 12:35:57 2006
+
+contents = "Text Format Volume Group"
+version = 1
+
+description = "Created *before* executing 'lvcreate -n test --size 1g skx-vg'"
+
+creation_host = "lappy" 
+# Linux lappy 2.6.8-2-686 #1 Sat Jan 8 16:50:08 EST 2005 i686
+Filesystems
+
+When it comes to using LVM effectively it is worth considering the filesystem that you wish to use upon your logical volumes.
+
+If you choose a filesystem which doesn't support resizing then increasing the size of your LVM volumes would be pointless. Here is a brief list of the resizable filesystems:
+
+filesystem      increase while mounted  increase while unmounted  decrease
+
+ext2fs          yes                     yes                       yes
+ext3fs          yes                     yes                       yes
+ReiserFS        yes                     yes                       yes
+JFS             no                      no                        no
+XFS             yes                     no                        no
+Note that some filesystems can be increased in size, but cannot be reduced.

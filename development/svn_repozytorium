@@ -1,0 +1,27 @@
+ROOT (pierwszy raz):
+svnadmin create /var/svn/repos/projekt
+groupadd svnusers 
+chown -R root:svnusers /var/svn/repos
+chmod -R g-w /var/svn/repos/projekt 
+chmod -R g+rw /var/svn/repos/projekt/db 
+chmod -R g+rw /var/svn/repos/projekt/locks
+gpasswd -a radek svnusers
+chown -R apache:svnusers /var/svn/repos
+
+#opcjonalnie
+/etc/init.d/svnserve start
+rc-update add svnserve default
+
+przepisac zawartosc katalogu conf w zaleznosci od potrzeb z poprzednich projektow
+
+(KOLEJNE REPOZYTORIUM):
+svnadmin create /var/svn/repos/projekt
+chmod -R g-w /var/svn/repos/projekt 
+chmod -R g+rw /var/svn/repos/projekt/db 
+chmod -R g+rw /var/svn/repos/projekt/locks
+chown -R apache:svnusers /var/svn/repos
+cat previous_project/conf/passwd > projekt/conf/passwd
+cat previous_project/conf/svnserve.conf > projekt/conf/svnserve.conf
+
+/etc/init.d/svnserve start
+

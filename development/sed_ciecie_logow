@@ -1,0 +1,11 @@
+UWAGA NIE ROBIĆ NA JEDNYM PLIKU BO WYJDZIE PUSTY!
+
+Przycinanie wszystkich linii zaczynających się od wzorca:
+sed -e '/^WZORZEC/d' plik > nowy_plik
+
+Przycinanie wszystkich linii zawierających wzorzec:
+sed -e '/.*WZORZEC.*/d' plik > nowy_plik
+
+NIE PEWNE:
+Przycinanie wszystkich linii kończących się wzorcem:
+sed -e '/.*WZORZEC^/d' plik > nowy_plik

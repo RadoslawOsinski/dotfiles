@@ -1,0 +1,5 @@
+Wypisanie portów na których nasłuchują programy. Warto sprawdzać czy porty są
+zbindowane do IPv6 czy IPv4:
+netstat -an | grep LIST
+(była historia z sklepemartystyplastyka na serwerze który słuchał tylko po
+jednym IPv)

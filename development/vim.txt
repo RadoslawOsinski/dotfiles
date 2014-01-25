@@ -1,0 +1,7 @@
+Zwalone wciecia w vim podczas copy&paste można zmienić poprzez
+wyłączenie "auto-indent":
+:set noai
+Aby spowrotem włączyć ten ficzer wpisujemy:
+:set ai
+
+

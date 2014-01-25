@@ -1,0 +1,80 @@
+Informacje z: http://danielkunnath.com/post/9969130766/dancing-with-jmx-jconsole-tomcat-6-ssh
+
+Dancing with JMX / JConsole / Tomcat 6 / SSH
+
+Preface
+
+Let me say first - there are tremendous numbers of topics about this subject (or similar) on forums all over the web talking about this. For each of those, there are a lot of different “try this’s” and “YMMV’s”. When I needed to get this rolling, the staggering number of different answers led me to believe that this is a pretty fragile and particular type of configuration.
+
+YMMV and all that.
+
+Anyway, this is what I did to get JConsole (SE6) hooked up to a remote Tomcat instance over an SSH tunnel.
+
+Get Your Tomcat House Right
+
+I’m on 6.0.29. The first thing was to edit the server.xml to include the JMX Listener that appeared after 6.0.24 - it’s called JmxRemoteLifecycleListener. This made things 10 times easier because the normal route only allows for one port specification and needs two ports. Since you don’t know the second port in advance, it becomes problematic to stand up the right SSH tunnel.
+
+JmxRemoteLifecycleListener is much easier because it has two port specs in the configuration, so you can set both ports to known values that stay static.
+
+server.xml changes
+
+To enable the listener, place this in your server.xml:
+<Listener className="org.apache.catalina.mbeans.JmxRemoteLifecycleListener" useLocalPorts="true" rmiRegistryPortPlatform="9993" rmiServerPortPlatform="9994"/>
+
+You, of course, can use whatever ports you want - just remember them for the upcoming connection string. The useLocalPorts attribute will instruct it to bind correctly, for this case, when you’re coming in over a tunnel to localhost.
+
+Augment Tomcat’s lib with JMX jar
+
+Get catalina-jmx-remote.jar from extras. Twice. You’re gonna need to put one copy in Tomcat’s lib directory and one on the machine where JConsole’s gonna connect from.
+
+Set CATALINA_OPTS
+
+Export the CATALINA_OPTS to include:
+
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.authenticate=false
+-Djava.rmi.server.hostname=<your server hostname>
+
+I did my export from bin/setenv.sh which gets picked up when bin/catalina.sh start is run. There are probably a few easy places from which to set this.
+
+Note, with this configuration, you’ll be connecting without any authentication. This should work fine to get you going, but then I recommend setting up JMX with authentication.
+
+Start Tomcat
+
+You should be all set up from the Tomcat side at this point.
+
+Client Side
+
+Open up SSH Tunnels
+
+Remember the ports you set in the server.xml? You gotta remember to open tunnels for them now. I’ll assume that you can SSH into the machine where tomcat is running. If your circumstances are a little different, you might have to augment the tunnel params.
+
+ssh -N -L9993:localhost:9993 -L9994:localhost:9994 <username>@<tomcat host>
+This should open a session with these ports tunneled from your client to the ports on the tomcat server.
+
+Start JConsole
+
+Now you can start JConsole.
+
+Remember the second copy of catalina-jmx-remote.jar that you got from the archives? You’re going to need to put it on the classpath of jconsole, treating it like a connector.
+
+On a Mac with Snow Leopard, I’m connecting with Java 1.6 as interpreted by Apple. When the connector usage document speaks of using connectors, you have to add them to the classpath.
+
+jconsole -debug -J"-Djava.class.path=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/jconsole.jar:/Users/w4/tools/catalina-jmx-remote.jar"  service:jmx:rmi://localhost:9994/jndi/rmi://localhost:9993/jmxrmi
+Apple has classes.jar rather than tools.jar, so you have to adjust accordingly if you’re on something non-Apple. In those environments, it’s more like:
+
+jconsole -debug -J"-Djava.class.path=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/jconsole.jar:<LOCAL_LIB_DIR>/catalina-jmx-remote.jar"  service:jmx:rmi://localhost:9994/jndi/rmi://localhost:9993/jmxrmi
+
+You’ll see the connection string at the end of things, for me it’s service:jmx:rmi://localhost:9994/jndi/rmi://localhost:9993/jmxrmi. You’ll recognize these as the ports you:
+
+Forwarded via SSH tunnel to your Tomcat server, and
+Set up in the JmxRemoteLifecycleListener stanza in server.xml.
+Make sure these all agree.
+
+Sidebar
+
+This tidbit on logging that I found in trying to solve this issue was a lifesaver. Daniel Fuchs lays out the logging.properties config to make connection issues at least apparent in trying to get JConsole to connect. Use them. It’s a simple matter of adding -J-Djava.util.logging.config.file=logging.properties to your command line args and the trials of connecting become apparent pretty quickly.
+
+Once this is all complete - you should connect easily and see monitoring graphs appear on your console.
+
+Hopefully it was worth it.

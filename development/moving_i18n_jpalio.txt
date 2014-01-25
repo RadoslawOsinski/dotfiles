@@ -1,0 +1,3 @@
+select * from P_LANG_STRINGS order by id desc
+
+w squirellu

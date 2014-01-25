@@ -1,0 +1,8 @@
+#pozwala sprawdzić lokalną konfigurację domeny na serwerze dns
+dig @localhost nazwadomeny
+
+#pozwala sprawdzic rekord soa z serwera dns
+nslookup -type=SOA nazwadomeny ip_serwera_dns
+
+#dobra strona do sprawdzania dns:
+http://mxtoolbox.com/
