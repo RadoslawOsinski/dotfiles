@@ -1,0 +1,50 @@
+# This blank configuration will automatically use DHCP for any net.*
+# scripts in /etc/init.d.  To create a more complete configuration,
+# please review /etc/conf.d/net.example and save your configuration
+# in /etc/conf.d/net (this file :]!).
+
+############### najprostsza konfiguracja dhcp w domu
+config_eth0="dhcp"
+###############
+
+############### konfiguracja bridge dla Qemu (BASED ON: http://en.gentoo-wiki.com/wiki/KVM)
+#bridge_br0="eth0 tap0 tap1"
+#brctl_br0="setfd 0 sethello 0 stp off"
+#rc_need_br0="net.tap0 net.tap1"
+
+##host system is a static address at 192.168.1.3 with dns server at 192.168.1.1 and a router at 192.168.1.1
+#config_br0="192.168.1.3/24"
+#routes_br0="default via 192.168.1.1"	#ustawienie routera
+#dns_domain_br0="example.com"
+#dns_servers_br0="192.168.1.1"		#ustawienie serwera dns
+#dns_search_br0="example.com"
+
+#config_tap0="null"
+#tuntap_tap0="tap"
+#tunctl_tap0="-u radek"
+#mac_tap0="00:00:00:00:00:00"
+
+#config_tap1="null"
+#tuntap_tap1="tap"
+#tunctl_tap1="-u radek"
+#mac_tap1="00:00:00:00:00:01"
+
+#config_eth0="null"
+###############
+
+###############ustawienia z prywatnym DNS
+#dhcp_eth0="nodns"
+#dns_servers_eth0="10.10.10.1"
+#dns_servers_eth0="127.0.0.1 8.8.8.8 8.8.4.4"
+###############koniec ustawien prywatnego DNS
+
+############### konfiguracja w orange sport, pamietac o dodaniu nameserver w resolv.conf
+#--> nameserver 10.0.0.112
+#config_eth0=("10.0.0.240 netmask 255.255.255.0 broadcast 255.255.255.255")
+#routes_eth0=("default via 10.0.0.245")
+#defaultroute="gw 10.0.0.245"
+###############
+
+ifplugd_eth0="-t 3"
+ifplugd_wlan0="-t 3"
+

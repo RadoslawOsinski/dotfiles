@@ -1,0 +1,62 @@
+# You can define a list modules for a specific kernel version,
+# a released kernel version, a main kernel version or just a list.
+#modules_2_6_23_gentoo_r5="ieee1394 ohci1394"
+#modules_2_6_23="tun ieee1394"
+#modules_2_6="tun"
+#modules="ohci1394"
+
+# You can give modules a different name when they load - the new name
+# will also be used to pick arguments below.
+#modules="dummy:dummy1"
+
+# Give the modules some arguments if needed, per version if necessary.
+#module_ieee1394_args="debug"
+#module_ieee1394_args_2_6_23_gentoo_r5="ieee1394 ohci1394"
+#module_ieee1394_args_2_6_23="tun ieee1394"
+#module_ieee1394_args_2_6="tun"
+
+# You should consult your kernel documentation and configuration
+# for a list of modules and their options.
+
+### START: Auto-converted from kernel-2.6
+
+# /etc/modules.autoload.d/kernel-2.6:  kernel modules to load when system boots.
+#
+# Note that this file is for 2.6 kernels.
+#
+# Add the names of modules that you'd like to load when the system
+# starts into this file, one per line.  Comments begin with # and
+# are ignored.  Read man modules.autoload for additional details.
+
+# For example:
+modules_2_6="${modules_2_6} fglrx"
+module_fglrx_args_2_6=""
+
+modules_2_6="${modules_2_6} vboxdrv"
+module_vboxdrv_args_2_6=""
+
+modules_2_6="${modules_2_6} vboxnetflt"
+module_vboxnetflt_args_2_6=""
+
+modules_2_6="${modules_2_6} vboxnetadp"
+module_vboxnetadp_args_2_6=""
+
+########## 3.0 >
+modules="${modules} fglrx vboxdrv vboxnetflt vboxnetadp kvm tun"
+
+#modules="${modules} fglrx vboxdrv vboxnetflt vboxnetadp kvm kvm-intel tun"
+#modules_3_0="${modules_3_0} fglrx vboxdrv vboxnetflt vboxnetadp kvm kvm-intel tun"
+
+#module_fglrx_args_3_0=""
+#modules_3_0="${modules_3_0} vboxdrv"
+#module_vboxdrv_args_3_0=""
+#modules_3_0="${modules_3_0} vboxnetflt"
+#module_vboxnetflt_args_3_0=""
+#modules_3_0="${modules_3_0} vboxnetadp"
+#module_vboxnetadp_args_3_0=""
+#modules_3_0="${modules_3_0} kvm"
+#module_kvm_args_3_0=""
+#modules_3_0="${modules_3_0} kvm-intel"
+#module_kvm_intel_args_3_0=""
+#modules_3_0="${modules_3_0} tun"
+#module_tun_args_3_0=""

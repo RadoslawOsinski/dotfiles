@@ -1,0 +1,4 @@
+# Configuration file for eselect
+# This file has been automatically generated.
+LDPATH="/usr/lib32/opengl/ati/lib:/usr/lib64/opengl/ati/lib"
+OPENGL_PROFILE="ati"

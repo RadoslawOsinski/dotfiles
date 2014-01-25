@@ -1,0 +1,4 @@
+# Configuration file for eselect
+# This file has been automatically generated.
+LDPATH="/usr/lib32/OpenCL/vendors/amd:/usr/lib64/OpenCL/vendors/amd"
+OPENCL_PROFILE="amd"
