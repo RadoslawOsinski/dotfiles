@@ -1,0 +1,50 @@
+IPTABLES="/sbin/iptables"
+WAN_IF="eth0"
+
+# Create new chains
+$IPTABLES -X DOS
+$IPTABLES -N DOS
+$IPTABLES -X INVALID
+$IPTABLES -N INVALID
+
+# UDP-flood protection
+$IPTABLES -A INPUT -i $WAN_IF -p udp -j DOS
+$IPTABLES -I DOS -p udp -m limit --limit 150/s --limit-burst 300 -j RETURN
+ 
+# Syn-flood protection
+$IPTABLES -A INPUT -i $WAN_IF -p tcp --syn -m state --state ! ESTABLISHED,RELATED -j DOS
+$IPTABLES -I DOS -p tcp --syn -m limit --limit 150/s --limit-burst 300 -j RETURN
+ 
+# Ping of death
+# Drop icmp packet breaks the rate of 1/s
+$IPTABLES -A INPUT -i $WAN_IF -p icmp --icmp-type echo-request -j DOS
+$IPTABLES -A DOS -p icmp --icmp-type echo-request -m limit --limit 150/s --limit-burst 300 -j RETURN
+
+#DROP ALL INVALID TCP FLAG CONFIGURATION
+# All of the bits are cleared
+$IPTABLES -A INPUT -p tcp --tcp-flags ALL NONE -j INVALID
+$IPTABLES -A FORWARD -p tcp --tcp-flags ALL NONE -j INVALID
+# SYN and FIN are both set
+$IPTABLES -A INPUT -p tcp --tcp-flags SYN,FIN SYN,FIN -j INVALID
+$IPTABLES -A FORWARD -p tcp --tcp-flags SYN,FIN SYN,FIN -j INVALID
+# SYN and RST are both set.
+$IPTABLES -A INPUT -p tcp --tcp-flags SYN,RST SYN,RST -j INVALID
+$IPTABLES -A FORWARD -p tcp --tcp-flags SYN,RST SYN,RST -j INVALID
+# FIN and RST are both set
+$IPTABLES -A INPUT -p tcp --tcp-flags FIN,RST FIN,RST -j INVALID
+$IPTABLES -A FORWARD -p tcp --tcp-flags FIN,RST FIN,RST -j INVALID
+# FIN is the only bit set, without the expected accompanyuing ACK
+$IPTABLES -A INPUT -p tcp --tcp-flags ACK,FIN FIN -j INVALID
+$IPTABLES -A FORWARD -p tcp --tcp-flags ACK,FIN FIN -j INVALID
+# PSH is the only bit set, without the expected accompaying ACK
+$IPTABLES -A INPUT -p tcp --tcp-flags ACK,PSH PSH -j INVALID   
+$IPTABLES -A FORWARD -p tcp --tcp-flags ACK,PSH PSH -j INVALID
+# URG is the only bit set, without the expected accompayning ACK
+$IPTABLES -A INPUT -p tcp --tcp-flags ACK,URG URG -j INVALID
+$IPTABLES -A FORWARD -p tcp --tcp-flags ACK,URG URG -j INVALID
+
+# set default policy
+$IPTABLES -A DOS -m limit --limit 10/s -j LOG --log-level 4 --log-prefix "[Firewall Log] DOS "
+$IPTABLES -A INVALID -m limit --limit 10/s -j LOG --log-level 4 --log-prefix "[Firewall Log] INVALID "
+$IPTABLES -A DOS -j DROP
+$IPTABLES -A INVALID -j DROP 

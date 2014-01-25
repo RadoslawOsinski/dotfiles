@@ -1,0 +1,43 @@
+Restore by mkstage4.sh:
+
+1. boot off a live-cd and repartition your hardisks and create filesystems as necessary (make sure you remove all remaining files of your to-be-intallation).
+--- Remember to mount correct partitions!
+2. eventually reboot, using option: gentoo docache
+3. # umount /mnt/cdrom
+4. remove the live-cd and insert the cd with the stage4
+5. # mount /dev/cdrom /mnt/cdrom
+6. # mount /dev/hdaX /mnt/gentoo
+7. # mkdir /mnt/gentoo/boot
+8. # mount /dev/hdaX /mnt/gentoo/boot
+9. # tar xzvpf /mnt/cdrom/host-stage4-18.04.2005-custom.tar.gz -C /mnt/gentoo/
+     or
+10. # tar xjvpf /mnt/cdrom/host-stage4-18.04.2005-custom.tar.bz2 -C /mnt/gentoo/
+11. # mount -t proc none /mnt/gentoo/proc
+12. # mount -o bind /dev /mnt/gentoo/dev
+13. # chroot /mnt/gentoo /bin/bash
+14. # env-update
+15. # source /etc/profile
+16. if in need adjust necessary files (/etc/fstab, /boot/grub/grub.conf) and/or install grub
+	#Moja uwaga odnośnie gruba. Wpisuję:
+	#grub
+	#grub> root (hd0,5) #zainstaluje sie na sda6, tam gdzie folder /boot !!!!!
+	#grub> setup (hd0)
+	#grub> quit
+17. # emerge sync (rebuild portage tree)
+18. # exit
+19. # cd /
+20. # umount /mnt/cdrom
+21. # remove backup cd
+22. # umount /mnt/gentoo/boot
+23. # umount /mnt/gentoo/dev
+24. # umount /mnt/gentoo/proc
+25. # umount /mnt/gentoo
+26. # reboot 
+
+--------------------
+LAST FSTAB CONTENT:
+##############################################
+/dev/sda6		/				ext4		rw,noatime,data=ordered		0 1
+/dev/sda7		/home/radek			ext4		rw,noatime,data=ordered		0 1
+##Montowany FTP
+/home/radek/fun/roznosci_na_ftp /home/ftp/roznosci_na_ftp	none		bind				0 0
