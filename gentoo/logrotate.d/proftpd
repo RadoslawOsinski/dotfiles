@@ -1,0 +1,11 @@
+/var/log/proftpd.log {
+	compress
+	rotate 4
+	weekly
+	delaycompress
+	copytruncate
+	missingok
+	notifempty
+	maxage 365
+	mail Radoslaw.Osinski@gmail.com
+}
