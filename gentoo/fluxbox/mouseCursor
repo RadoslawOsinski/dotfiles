@@ -1,0 +1,13 @@
+Pełna zmiana motywu kursora
+------------------------------
+Wystarczy dodać dwa wpisy do dwóch plików. Pierwszym z nich jest ~/.Xdefaults:
+
+Xcursor.theme: gentoo
+Xcursor.size: 18
+
+Natomiast drugi plik potrzebny do konfiguracji to ~/.gtkrc-2.0:
+
+gtk-cursor-theme-name="gentoo"
+gtk-cursor-theme-size="18"
+
+Gdzie “gentoo” to nazwa naszego wybranego motywu znajdującego się w /usr/share/cursors/xorg-x11.

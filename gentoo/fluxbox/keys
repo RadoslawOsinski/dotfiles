@@ -1,0 +1,115 @@
+OnTitlebar Mouse1 :MacroCmd {Focus} {Raise} {ActivateTab}
+OnTitlebar Move1 :StartMoving
+OnLeftGrip Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+OnWindowBorder Move1 :StartMoving
+OnTitlebar Mouse2 :StartTabbing
+OnTitlebar Double Mouse1 :Shade
+OnTitlebar Mouse3 :WindowMenu
+OnWindow mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindow mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing BottomRight}
+
+Control Shift k	:ExecCommand ~/.fluxbox/scripts/ShutdownDialog.sh
+#mod1 == ALT
+#mod4 == Znaczek Windowsa
+############################################
+#Prawy i lewy przycisk myszki
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse2 :WorkspaceMenu
+OnDesktop Mouse3 :RootMenu
+#OnDesktop Mouse4 :NextWorkspace
+#OnDesktop Mouse5 :PrevWorkspace
+############################################
+#Przelaczanie Workspacow
+mod1 mod4 F1			:Workspace 1
+mod1 mod4 F2			:Workspace 2
+mod1 mod4 F3			:Workspace 3
+mod1 mod4 F4			:Workspace 4
+mod1 mod4 F5			:Workspace 5
+mod1 mod4 F6			:Workspace 6
+mod1 mod4 F7			:Workspace 7
+mod1 mod4 F8			:Workspace 8
+mod1 mod4 F9			:Workspace 9
+mod1 mod4 F10			:Workspace 10
+mod1 mod4 F11			:Workspace 11
+mod1 mod4 F12			:Workspace 12
+
+############################################
+#Klawisze Specjalne
+None XF86AudioRaiseVolume	:ExecCommand ~/.fluxbox/scripts/audioRaiseVolume.sh > /dev/null;
+None XF86AudioLowerVolume	:ExecCommand ~/.fluxbox/scripts/audioLowerVolume.sh > /dev/null;
+None XF86AudioMute		:ExecCommand ~/.fluxbox/scripts/audioMute.sh > /dev/null;
+None XF86AudioPrev		:ExecCommand audacious --rew > /dev/null
+None XF86AudioNext		:ExecCommand audacious --fwd > /dev/null
+None XF86AudioPlay		:ExecCommand audacious --play-pause > /dev/null
+None XF86Display		:ExecCommand xset dpms force off
+
+############################################
+#upodobniajace do Windowsa
+None Menu		:RootMenu
+
+mod1 Tab		:NextWindow {groups} (workspace=[current])  !! FBCV13 !!
+mod1 Shift Tab		:PrevWindow {groups} (workspace=[current])  !! FBCV13 !!
+mod1 m 			:Minimize
+mod4 m            	:Maximize
+mod4 q			:Close
+mod4 Right		:MoveRight 10
+mod4 Left		:MoveLeft 10
+mod4 Up			:MoveUp 10
+mod4 Down		:MoveDown 10
+mod1 mod4 1		:SendToWorkspace 1
+mod1 mod4 2		:SendToWorkspace 2
+mod1 mod4 3		:SendToWorkspace 3
+mod1 mod4 4		:SendToWorkspace 4
+mod1 mod4 5		:SendToWorkspace 5
+mod1 mod4 8		:SendToWorkspace 8
+mod1 mod4 9		:SendToWorkspace 9
+
+############################################
+#PROGRAMY
+mod4 a		:ExecCommand gnome-terminal --hide-menubar -e alsamixer
+mod4 c		:ExecCommand google-chrome
+mod4 Shift c	:ExecCommand gcalctool
+mod4 d		:ExecCommand java -jar ./BinaryPrograms/JDownloader/JDownloader.jar
+mod4 e		:ExecCommand Eterm
+mod4 f		:ExecCommand firefox-bin
+mod4 g		:ExecCommand gvim
+mod4 Shift g	:ExecCommand gedit
+mod4 i		:ExecCommand /home/radek/BinaryPrograms/idea.sh
+mod4 Shift i	:ExecCommand inkscape
+mod4 j		:ExecCommand /home/radek/jd.sh
+mod4 k		:ExecCommand kadu
+mod4 l		:ExecCommand texmaker
+mod4 Shift m	:ExecCommand lomath
+mod4 n		:ExecCommand nautilus --no-desktop --browser
+mod4 o		:ExecCommand opera
+mod4 p		:ExecCommand thunderbird-bin
+mod4 mod1 p	:ExecCommand psi
+mod4 r		:ExecCommand gnome-terminal --hide-menubar -e su
+mod4 Shift r	:ExecCommand ./BinaryPrograms/squirrel.sh
+mod4 s		:ExecCommand shutter
+mod4 Shift s	:ExecCommand skype
+mod4 t		:ExecCommand gnome-terminal --hide-menubar
+mod4 Shift t	:ExecCommand Eterm
+mod4 x		:ExecCommand xine
+mod4 Shift x	:ExecCommand xarchiver
+mod4 v		:ExecCommand vuze
+mod4 Shift v	:ExecCommand VirtualBox
+mod4 Shift w 	:ExecCommand lowriter
+
+############################################
+Shift Mod4 1 		:ExecCommand ~/.fluxbox/radio/1.sh > /dev/null
+Shift Mod4 2		:ExecCommand ~/.fluxbox/radio/2.sh > /dev/null
+Shift Mod4 3		:ExecCommand ~/.fluxbox/radio/3.sh > /dev/null
+Shift Mod4 4 		:ExecCommand ~/.fluxbox/radio/4.sh > /dev/null
+Shift Mod4 5 		:ExecCommand ~/.fluxbox/radio/5.sh > /dev/null
+Shift Mod4 6 		:ExecCommand ~/.fluxbox/radio/6.sh > /dev/null
+Shift Mod4 7 		:ExecCommand ~/.fluxbox/radio/7.sh > /dev/null
+Shift Mod4 8 		:ExecCommand ~/.fluxbox/radio/8.sh > /dev/null
+Shift Mod4 9 		:ExecCommand ~/.fluxbox/radio/9.sh > /dev/null
+Shift Mod4 0 		:ExecCommand killall mplayer
+
+############################################
+#PrintScreen
+None Print 		:ExecCommand import -window root screenshot_$(date +%Y%m%d%H%M%S).png
+

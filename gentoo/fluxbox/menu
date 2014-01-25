@@ -1,0 +1,73 @@
+[begin] (Fluxbox)
+
+#[submenu] (Net)
+#        [exec]	(Firefox) {firefox} 
+#	[exec]	(Opera) {opera}
+#        [exec]	(Kadu) {kadu} 
+#	[exec]  (Skype) {skype}
+#       [exec]	(Links) {Eterm -e links www.google.pl} 
+#[end]
+
+#[submenu] (Multimedia)
+#        [exec]	(Audacious) {audacious} 
+#        [exec]	(alsamixer) {Eterm -e alsamixer} 
+#        [exec]	(Xine) {xine} 
+#	[exec]	(KolourPaint) {kolourpaint}
+#	[exec]	(K3B) {k3b}
+#[end]
+
+#[submenu] (Programming)
+#	[submenu] (Srodowisko)
+#        	[exec]	(Vim) {Eterm -e vim}
+##		[exec]	(Gedit) {gedit} 
+#		[exec]	(gVim) {gvim}
+#        	[exec]	(Eclipse) {/usr/lib64/eclipse-3.2/eclipse} 
+#        	[exec]	(Kalkulator) {gcalctool} 
+#        	[exec]	(Quanta) {quanta} 
+#		[exec]	(Bluefish) {bluefish}
+#		[exec]	(Doxygen) {Eterm -e doxygen}
+#		[exec]	(LTSpice) {wine /mnt/win/Program\ Files/LTC/SwCADIII/scad3.exe}
+#		[exec]	(Umbrello) {/usr/kde/3.5/bin/umbrello}
+#	[end]
+#	[submenu] (Debuging)
+#		[exec]  (Efence) {Eterm -e efence}
+#		[exec]	(Valgrind) {Eterm -e valgrind}
+#		[exec]  (Strace) {Eterm -e strace}
+#		[exec]  (Opcontrol) {Eterm -e opcontrol}
+#		[exec]  (Lsof) {Eterm -e lsof}
+#	[end]
+#
+#[end]
+
+#[submenu] (Menagers)
+#	[exec]	(Nautilus) {nautilus --no-desktop --browser}
+#	[exec]	(Rox) {rox}
+#[end]
+
+#[submenu] (Torrenty)
+#	[exec]	(QTorrent) {qtorrent}
+#[end]
+
+	[config] (Configure)      
+	[workspaces] (Workspace List)
+	[submenu] (Styles)
+	    [include]	(/usr/share/fluxbox/menu.d/styles/) 
+	[end]
+	[submenu] (Wallpapers)
+	    [wallpapers] (/home/radek/.fluxbox/backgrounds)
+	[end]
+	[exec]  (Gtk-theme-switcher) {gtk-theme-switch}
+
+	[commanddialog] (Fluxbox Command) 
+	
+	[exec]	(Run...) {grun}
+#	[exec]	(Mount Pendrive) {/home/radek/Skrypty/Fluxbox/orMount.sh}
+#	[exec]	(Umount Pendrive) {/home/radek/Skrypty/Fluxbox/orUmount.sh}
+#        [exec]	(ShutDown) {/home/radek/Skrypty/Fluxbox/orShutdown1.sh} 
+#        [exec]	(Reboot) {/home/radek/Skrypty/Fluxbox/orReboot.sh} 
+#	[exec]	(Lock) {xlock -mode bat}
+#        [exec]	(Logout) {Exit} 
+#        [exec]	(RestartX) {Restart} 
+
+[end]
+

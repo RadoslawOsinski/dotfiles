@@ -1,0 +1,5 @@
+# Your favourite browser. You can also specify options.
+MY_BROWSER=chromium
+
+# standard url for console-browsers
+HOMEPAGE=www.google.pl

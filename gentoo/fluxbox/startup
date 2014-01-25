@@ -1,0 +1,72 @@
+# fluxbox startup-script:
+#
+# Lines starting with a '#' are ignored.
+# You can set your favourite wallpaper here if you don't want
+# to do it from your style.
+#
+# fbsetbg -f /root/pictures/wallpaper.png
+#
+# This sets a black background
+#/usr/bin/fbsetroot -solid black
+# This shows the fluxbox-splash-screen
+# fbsetbg -C /usr/share/fluxbox/splash.jpg
+# Other examples. Check man xset for details.
+#
+# Turn off beeps:
+# xset -b
+#
+# Increase the keyboard repeat-rate:
+xset r rate 185 35
+xset r 116
+xset r 113
+# Your own fonts-dir:
+# xset +fp "/root/.fonts"
+#
+# Your favourite mouse cursor:
+# xsetroot -cursor_name right_ptr
+#
+# Change your keymap:
+# xmodmap "/root/.Xmodmap"
+# Applications you want to run with fluxbox.
+# MAKE SURE THAT APPS THAT KEEP RUNNING HAVE AN ''&'' AT THE END.
+#
+# idesk &
+#  root-tail -interval 100 -color green --outline -g 500x430+380+0 
+#/var/log/mysql/mysqld.err &
+#  root-tail -interval 100 -color red --outline -g 880x350+0+430 
+#/var/log/mysql/mysqld.err &
+#root-tail -interval 100 -color red --outline -g 880x350+0+430 /var/log/proftp.log &
+
+export DISPLAY=:0.1
+root-tail -interval 100 -color red --outline -g 1200x600+650+550 /var/log/proftpd.log &
+conky &
+
+export DISPLAY=:0.0
+root-tail -interval 100 -color red --outline -g 900x300+455+430 /var/log/proftpd.log &
+conky &
+setxkbmap pl;
+
+#sets previous wallpapers
+DISPLAY=:0.0 fbsetbg -l;
+DISPLAY=:0.1 fbsetbg -l;
+
+#nautilus icons
+#to delete no longer used
+#gnome-settings-daemon &
+
+#tilda &
+#  Eterm --desktop 8 --geometry 80x30+0+0 --delay 0 --borderless 
+#--buttonbar=false --scrollbar=false --trans & 
+#  Eterm --desktop 8 --geometry 80x30+650+0 --delay 0 --borderless 
+#--buttonbar=false --scrollbar=false --trans & 
+#  Eterm --desktop 8 --geometry 80x28+0+400 --delay 0 --borderless 
+#--buttonbar=false --scrollbar=false --trans & 
+#  Eterm --desktop 8 --geometry 80x28+650+400 --delay 0 --borderless 
+#--buttonbar=false --scrollbar=false --trans &
+
+# And last but not least we start fluxbox.
+# Because it is the last app you have to run it with ''exec'' before it.
+
+#exec /usr/bin/fluxbox
+# or if you want to keep a log:
+exec /usr/bin/fluxbox -log "/var/log/fluxbox.log"

@@ -1,0 +1,14 @@
+[app] (name=fbrun)
+  [Position]	(CENTER)	{0 0}
+  [Layer]	{2}
+[end]
+[app] (name=chrome) (class=Chrome)
+[end]
+[app] (name=kadu) (class=Kadu) (role=kadu-main)
+  [Dimensions]	{438 742}
+  [Position]	(UPPERLEFT)	{924 -3}
+[end]
+[app] (name=chromium-browser) (class=Chromium-browser)
+  [Dimensions]	{808 684}
+  [Position]	(UPPERLEFT)	{453 0}
+[end]
