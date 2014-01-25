@@ -1,0 +1,46 @@
+Polecenie restartujące leasenery bazy danych:
+LSNRCTL reload
+
+Treść listenerów jest w pliku:
+TNSNAMES.ORA
+
+=============
+ORA-12518: TNS:listener could not hand off client connection:
+
+sqlplus / as sysdba
+show parameter processes;
+alter system set processes=500 scope=spfile;
+==============
+
+INSTALACJA:
+....SABAYON....
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
+export ORACLE_SID="TEST";
+
+============
+radek@rmo ~ $ su oracle
+Password: 
+oracle@rmo /home/radek $ /u01/app/oracle/product/11.2.0/xe/bin/sqlplus / as
+sysdba
+
+SQL*Plus: Release 11.2.0.2.0 Production on Sun Aug 4 12:13:27 2013
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> 
+
+
+
+lub:
+radek@rmo ~ $ su
+Password: 
+rmo radek # gpasswd -a radek dba
+Adding user radek to group dba
+===============
+Jak podczas importu pojawia sie "invalid file name" wtedy trzeba wykonac
+polecenie:
+ALTER SYSTEM SET DB_CREATE_FILE_DEST='C:\oraclexe';
+lub
+ALTER SYSTEM SET DB_CREATE_FILE_DEST='/u01/app/oracle';

@@ -1,0 +1,74 @@
+HOWTO: Install Oracle 11g XE (Express Edition)
+When it comes to simple web development and data-driven applications, I have
+to admit it's tough to beat Oracle's Application Express (APEX). Unfortunately
+that requires installing Oracle. Then Oracle finally released an express
+edition of their database 10g to spark interest and get developers hooked.
+Express editions of expensive RDBMS packages were quite the fad a few years
+ago, somewhat like street pushers giving us kids a "free sample" only to have
+our personal apps suddenly halt one day having reached maximum capacity.
+Oracle never was a very Gentoo/Sabayon friendly package, but some managed to
+install 10g XE with some scriptural crowbars and duct-tape permission changes.
+Unfortunately the 10g XE image has not been maintained and several dependency
+package versions are long gone from portage and entropy. Introduce 11g XE -
+currently in beta. With combined curiosity and skepticism, I finally sat down
+today and gave 11g XE beta a try. It was surprisingly easy to get an instance
+of 11g running on my Sabayon x86_64 box. Note that 11g XE comes in both x86
+and x86_64 builds unlike 10g which only offered x86. It didn't even involve
+the half dozen or so re-installs required during my 10g XE exploit
+Surprisingly, I had an instant happily running 11g XE beta x86_64 and APEX 4
+promptly loading on port 8080. Mind you 11g XE is currently in beta, though
+license terms on the release express editions have been attractive. 11g XE may
+be used and distributed for production purposes, unlike developer licenses.
+I've often used simple APEX applications to productively track basic lists
+around the office - like football pools and lunch orders. MySQL and PHP are
+great, but when I need a web-accessed interactive master-detail report and
+form 3 hours ago, I like the option of APEX. Luckily it looks like now we'll
+be able to do this all on Sabayon again, though keep in mind Sabayon is one of
+the many configurations that Oracle doesn't officially support.
+Installation
+
+Download the appropriate 11g beta RPM from [1].
+Clear out any existing oracle homes or 10g residue - particularly
+/etc/init.d/oracle-xe, whose name stays the same in 11g.
+equo install libaio rpm bc (if not already present).
+rpm -ivh --force --nodeps [vers].rpm
+/etc/init.d/oracle-xe configure. I always comment out line 538, or whichever
+line exits when a config already exists.
+Now test your apex page: http://localhost:8080/apex. If it works, pages may
+load a little slow. Immediately increase the paltry "shared_servers" parameter
+from sqlplus to fix this:
+sqlplus / as sysdba alter system set shared_servers=32 scope=both;
+
+Autostart at boottime
+
+The configuration script (see step 5 above) asks if Oracle should be started
+automatically. The autostart configuration does not work correctly with
+Sabayon (the init script is not compatible). To enable autostart, you can make
+a init script that calls the original oracle init script (maybe there are
+better solutions...). The following steps are necessary to enable auto start:
+1. create a new init script in /etc/init.d with the name
+"oracle-xe_init_script_for_sabayon" (or any other name you like) and
+copy/paste the following lines of code into the script:
+#!/sbin/runscript
+
+start() {
+  /etc/init.d/oracle-xe start
+  } 
+
+  stop() {
+    /etc/init.d/oracle-xe stop
+    }
+    2. make the script executeable
+    chmod 755 oracle-xe_init_script_for_sabayon
+    3. create a symbolic link in /etc/runlevels which starts the script at
+    boottime
+    ln -s /etc/init.d/oracle-xe_init_script_for_sabayon
+    /etc/runlevels/default/oracle-xe_init_script_for_sabayon
+    Backup script backup.sh
+
+    The backup script tests if the current user is in the dba group and
+    refused to work if not. To test if the user is in the dba group, the
+    script calls the "groups" command in /usr/bin/. In Sabayon, "groups" is
+    located in /bin/ and not in /usr/bin/. To get the backup script running
+    under Sabayon, create a symbolic link to the "groups" command:
+    ln -s /bin/groups /usr/bin/groups

@@ -1,0 +1,55 @@
+call sysproc.admin_cmd('REORG TABLE nazwa_tabeli') <<<<<<< reorganizacja tabel!
+
+=======================
+You can get the details for any error message from a DB2 command line 
+by issuing:
+db2 ? sqlXXXX
+where XXXX is the message number
+
+=====================
+DB2 queries:
+db2 [return]
+connect to SAMPLE [return]
+"QUERIES"
+
+
+====================
+Zakładanie bazy danych:
+create database test using codeset UTF-8 territory pl;
+polaczenie z nia:
+connect to test user admin using passwd;
+=====================
+Moving a db2 database
+
+You must have encountered this problem sometime while working on db2. It doesn’t have a proper GUI for direct moving of a database from one system to another. Here are the detailed steps.
+
+Step1:
+Export using following command sequence
+
+/>db2move databasename export
+
+Commet: this generates files Export.out – ASCI info about export db2move.lst – has table info tabn.ixf – info exchange format, holds data .msg -message files tabna.nnn – large object data
+
+/>db2look -d databasename -e -a -o outputfilename.sql
+
+Comment: generates the sql file holding DDL data
+
+Step2:
+move all files to the target system
+
+Step3:
+Import using following command sequence
+
+/>db2 create databasename
+comment: creates the database
+/>db2 -tvf sqlfile.sql
+comment: structure the generated database with the sql file from the export
+/>db2move databasename load
+
+/*HURRAY DATABASE MOVED */
+
+===================================== how to from G....... B.......:
+=====================================
+#tworzenie bazy danych
+db2 CREATE DATABASE test AUTOMATIC STORAGE YES  ON '/data/db2data/test' DBPATH ON '/data/db2data/test' USING CODESET UTF-8 TERRITORY PL COLLATE USING SYSTEM PAGESIZE 32768 
+

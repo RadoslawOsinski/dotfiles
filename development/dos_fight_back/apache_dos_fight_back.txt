@@ -1,0 +1,89 @@
+Wcześniej defaultowy vhost apacha kierował na stronę ..... Może to
+spowodowało zainteresowanie jakiś hackerów. Spojrzałem w logi apacha i
+zauważyłem jakieś wpisy typu: 
+
+ GET http://www.surgedirect.com/iframes/banner-iframe.php?url=http%3A%2F
+%2Fwww.surgedirect.com%2Fad_scripts%2Fad_banner_track.php%3Fd%
+3D0INsf-s9ItaWHr1N9cXj9h5heM6s-lk9U8KXBGPDE7py0zcAWqQnVB_E3D2Z5vqpHso0fk3DNN3HRT2zAaKogWr5qiyxgAZWNSs3W-vqqXXhhk_2QQ91YicN0MePekhg9AhN07mFNyf_UZ3f1I-Q6DLndLg2DmNanyWLY1wQQ8ob5Mm07Kh2zQv4adA0jT7fHY8QJSlFad6_N-6864h7Jy09S0q7LPRXKHBzCn7ZOFIO53rKx7gqHbfbi-P95chTkRpLEw7yrPGIu2JvpTEDxnQpbgqvI28gDWeKBR4Ns5pLg5-C8BK_MeQeROL2NHBvmwicuwCGLkqSffys8UVLz4tQWTR98C4rEN74WphMu8-tXpWh9e4sqzsIapg_ZFGg&image=http%3A%2F%2Fs3.amazonaws.com%2Fsurgedirect-default-banner%2F728x90%2Fstandard_728x90_001.jpg&o=384&title=10349&width=728&height=90&siteid=897
+GET http://ad.zanox.com/ppc/html/ppc_error.html
+
+Czyli ni z gruszki ni z pietruszki. Musieli łączyć się na IP serwera i
+próbować pobrać konkretnie te zasoby. Na testach i developerzy łączą się
+na ...., więc takie adresy są niemożliwe, musiałyby mieć
+GET http://..../...
+
+Decyzja: Defaultowy vhost kieruje na pustą stronę i pisze do
+default-access.log'a. A potem wycinanie adresów.
+
+Najpierw wyciąłem co większe klasy z open relayami a potem zacząłem
+wycinać skryptem: 
+
+sed -e 's/ .*//' default-access_log  | sort | uniq -c | sort -n \
+	| while read ILOSC IP
+do 
+	if [ "$IP" != "::1" ]
+	then  
+		echo blokuje $IP
+		iptables -A PROXY -s $IP -j DROP
+	fi
+done
+
+W logach było ::1 a nie chciałem wyciąć sobie lokalnego odwołania, więc
+zostawiłem ten wyjątek.
+
+Wcześniej jeszcze dodałem w iptables reguły
+
+iptable -N PROXY
+iptables -I INPUT -s 192.168.1.0/24 -j ACCEPT
+iptables -I INPUT 2 -j PROXY
+
+Pierwszy input jest po to, żeby w przypadku adresów 192.168.1.x nie
+przebiegał całej tablicy odrzuconych IP'ók. Taki drobny tunning ;)))
+
+I teraz co jakiś czas cyklicznie robię tak:
+
+1) Odpalam skrypt. 
+2) przenoszę plik logów 
+3) restartuję apacha
+
+Mógłbym oczywiście dać tail'a i na bieżąco dodawać IP ale chcę mieć
+podgląd ile tego przybyło od ostatniego czasu:
+
+ watch "sed -e 's/ .*//' /var/log/httpd/default-access_log  | sort \
+	| uniq -c | sort -n -r"
+
+ Every 2,0s: sed -e 's/ .*//' /var/log/httpd/default-access_log  | sort
+| uniq -c | sort -n -r
+
+Efekt dla apacha uruchomionego od kilku minut:
+Tue Oct 11 11:57:59 2011
+    135 125.99.120.26
+      9 14.112.66.69
+      9 114.249.24.97
+      8 184.105.139.188
+      4 113.112.158.27
+      4 111.194.106.159
+      3 98.126.131.74
+      3 218.71.164.168
+      2 94.233.16.223
+      2 221.232.83.84
+      2 199.192.154.96
+      2 180.137.151.111
+      2 116.253.36.100
+      1 85.25.109.220
+      1 82.35.36.110
+      1 58.49.150.75
+      1 173.236.65.28
+      1 125.93.181.53
+
+Wcześniej takie coś byłoby po sekundzie 
+
+
+======================================================================================
+Jeszcze z innych przydatnych poleceń to np. tee, które zapisuje
+jednocześnie do pliku i stdout. Przykładowo masz jakiś skrypt, który coś
+wyrzuca na stdout. Jak chcesz mieć to w logu i jednoczesny podgląd w
+trakcie działania to wywołujesz: ./skrypt | tee plik.logu
+
+
+

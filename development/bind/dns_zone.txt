@@ -1,0 +1,19 @@
+$ttl 1d
+@               IN      SOA     dns1.test.pl.       admin.test.pl. (
+                        2012122101 ; serial
+                        30m ; refresh
+                        5m ; retry
+                        2w ; expire
+                        1d ; default_ttl
+                        )
+
+;dns1           IN      A       82.53.251.124
+;dns2           IN      A       80.27.87.138
+poczta		IN	CNAME	test.pl.
+mail		IN	CNAME	test.pl.
+@		IN	NS	dns1.test.pl.
+@		IN	NS	dns2.test.pl.
+@               IN      MX      5       mail1.test.pl.
+@               IN      MX      10       mail2.test.pl.
+@		IN	A	90.232.69.12
+
