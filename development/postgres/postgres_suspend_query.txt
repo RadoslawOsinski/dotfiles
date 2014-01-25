@@ -1,0 +1,21 @@
+Pisząc stronę na postgresie duży przyrost danych spowodował wydłużenie czasu zapytań. Potrzebna była zmiana logiki działania strony. Jednak między czasie chciałem przerwać działanie wielogodzinnego zapytania SQL, bo obciążało bardzo procesor serwera. Robiłem to poprzez polecenie "kill -9" na pid procesu z danym selectem. TAK NIE WOLNO ROBIĆ! Postgres po takim poleceniu zamykał wszystkie połączenia i otwierał je na nowo. Takie działanie działało wcześniej kilka razy ale wczoraj dowiedziałem się doświadczalnie, że może to rozspójnić bazę danych! Czego efektem jest potrzeba oddzyskiwania z backupów!
+
+Prawidłową metodą zamykania trefnych zapytań SQL w postgresie jest polecenie:
+
+SELECT pg_cancel_backend(proced_id);
+Jeśli nie da się wykonać tego polecenia w jDesignerze należy to zrobić przez konsolę postgresa lub inne IDE. 
+Aby bezpiecznie zamknąć połączenia z bazą danych należy używać:
+
+SELECT pg_termintate_backend(proced_id);
+A w celu wylistowania trwających transakcji:
+
+SELECT * FROM pg_stat_activity;
+Dla chcących pogłębić temat odsyłam do:
+
+
+http://postgresql.1045698.n5.nabble.com/How-to-stop-a-query-td1924086.html
+http://stackoverflow.com/questions/3508627/stop-long-running-sql-query-in-postgresql-when-session-or-requests-no-longer-e 
+http://www.postgresql.org/docs/current/interactive/functions-admin.html
+http://www.postgresql.org/docs/8.2/static/functions-admin.html 
+
+Polecam się z tym zaznajomić jeśli nie chce się siedzieć w nocy.

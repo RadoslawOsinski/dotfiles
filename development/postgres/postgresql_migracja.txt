@@ -1,0 +1,63 @@
+--------------rozne:--------------
+Obciazenie dysku postgresa:
+SELECT relname, relpages FROM pg_class ORDER BY relpages DESC;
+
+Rozmiar bazy:
+SELECT pg_database_size('geekdb');
+lub
+SELECT pg_size_pretty(pg_database_size('geekdb'));
+
+Finding the size of tables:
+SELECT relname, relpages FROM pg_class ORDER BY relpages DESC;
+
+
+------------ PROSTY BACKUP!!!!!!
+1. pg_dumpall -f backup.sql 	#dump bazy danych jako postgres
+-------------------------
+Aby usunąć postgresa na macu oprócz usunięcia folderu trzeba edytować wpis pliku za pomocą:
+* sudo vim /etc/postgres-reg.ini
+
+Instalacja postgresa:
+* ściągnąć obraz za pomocą:
+curl -O http://get.enterprisedb.com/postgresql/postgresql-9.1.4-1-osx.dmg
+* zamontować obraz za pomocą:
+hdiutil attach myDMGname.dmg
+* instalacja z zamontowanego katalogu:
+* edytować wcześniej /etc/sysctl.conf wpisując coś podobnego do:
+kern.sysv.shmmax=1610612736
+kern.sysv.shmall=393216
+kern.sysv.shmmin=1
+kern.sysv.shmmni=32
+kern.sysv.shmseg=8
+kern.maxprocperuid=512
+kern.maxproc=2048
+----------------------
+*sudo ./postgresql-9.1.4-1-osx.app/Contents/MacOS/installbuilder.sh --mode text
+(ewentualnie  sudo /Volumes/PostgreSQL\
+9.2.4-1/postgresql-9.2.4-1-osx.app/Contents/MacOS/osx-intel --mode text)
+LUB
+* W pliku konfiguracyjnym postgresa (gentoo: /etc/conf.d/postgresql-9.0) ustawiamy locale:
+ PG_INITDB_OPTS="--locale=pl_PL.UTF-8"
+* Konfiguracja serwera po instalacji, np:
+emerge --config dev-db/postgresql-server:9.2
+
+Postgres migracja:
+1. Włączyć postgres 8.4
+2. Zrobić backup skryptem na 8.4
+3. Zrobić dumpall na 8.4 (polecenie pg_dumpall nie idzie z powodu autoryzacji): 
+/Library/PostgreSQL/8.4/bin/pg_dump -U test > test.sql
+/Library/PostgreSQL/8.4/bin/pg_dump -U test | gzip > test.gz
+#/Library/PostgreSQL/8.4/bin/psql -d dbname -U postgres (enter the dbname service database)
+#alter user postgres with password 'fuck you'; (run query to change the password)
+4. sudo launchctl stop com.edb.launchd.postgresql-8.4
+5. sudo launchctl start com.edb.launchd.postgresql-9.1
+	#startowanie postgresa na macos
+	sudo launchctl list
+6. Zaktualizować backup skrypt na 9.1
+7. Stworzyć użytkowników:
+/Library/PostgreSQL/9.1/bin/createuser -a -d -P -E -U postgres -W test;
+8. Stworzyć bazy danych:
+/Library/PostgreSQL/9.1/bin/createdb -O test -U test -W test;
+9. Zrobić restore na instancjach:
+gunzip -c test.gz
+/Library/PostgreSQL/9.1/bin/psql -U test -d test -f ./test.sql;

@@ -1,0 +1,4 @@
+export:
+pg_dump --column-inserts --data-only --table=<table> <database>
+import:
+psql -U <user> -d <database> -f <file>
