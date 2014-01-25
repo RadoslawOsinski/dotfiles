@@ -1,0 +1,30 @@
+Fooling the Webmasters
+Do you think the web master cannot stop u with above command. to fool him use  
+
+wget -r -U Mozilla -erobots=off -w 5 --limit-rate=20 http://url-to-site/ 
+
+here -w 5 instructs wget to wait 5 secs before downloading another file and --limit-rate=20 makes wget to cap the download speed to 20KBps. So u can fool the webmaster .... 
+=====================================================================
+You can download all files of a particular format , like all pdfs listed on a webpage,
+
+wget -r -l1 -A.pdf --no-parent http://url-to-webpage-with-pdfs/ 
+
+This is most useful for students. When they find a webpage of a professor with the files they can use this command to download all pdfs or lecture notes. 
+=======================================================================
+wget --tries=inf --limit-rate=amount --wait=seconds --quota=20m http://strona
+
+Ilość prób wynosi oo. Ustawiono maksymalną prędkość ściągania na "amount". Odczekuje liczbę sekund między pobraniami. Random-wait daje losową liczbę odczekań (parametr -random-wait). Quota określa limit wielkości plików ściąganych. W moim przypadku 20 Mb (możliwe sufiksy "k' dla Kb i "m" dla megabaitów). Wartość quoty równa 0 lub inf daje nieograniczoną quotę.
+
+======================================================================
+Do ściągania z staforda:
+wget --user=guest --password=a ftp://"staford"/plik.plik
+========================================================================
+Do ściągnięcia sunowskich tutoriali!
+
+wget --follow-ftp --recursive --level=5 --no-parent --convert-links --page-requisites --tries=inf --quota=50m  http://
+
+
+--page-requisites powoduje poprawne wyświetlanie strony, jej wszystkich elementów
+--convert-links zamieni linki na bezwzględne
+--follow-ftp powoduje podążanie w linkach ze strony do plików z ftp
+--no-parent ściągnie stronę ale bez "rodziców"

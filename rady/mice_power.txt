@@ -1,0 +1,6 @@
+echo -n "on" > /sys/bus/usb/devices/usb1/power/control;
+echo -n "on" > /sys/bus/usb/devices/usb2/power/control;
+echo -n "on" > /sys/bus/usb/devices/usb3/power/control;
+echo -n "on" > /sys/bus/usb/devices/usb4/power/control;
+
+modprobe -r hid_logitech_dj && modprobe hid_logitech_dj

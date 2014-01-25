@@ -1,0 +1,6 @@
+dd if=/dev/mem of=/tmp/ramdump
+strings /tmp/ramdump | grep "some text in your file"
+
+Pozwala znaleźć "some text ..." który był zapamiętany w RAM. :)
+
+

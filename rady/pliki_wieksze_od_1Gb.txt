@@ -1,0 +1,1 @@
+find / -type f -size +1048576 -printf "%s:%h%f\n"

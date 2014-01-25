@@ -1,0 +1,2 @@
+np. tak:
+rsync -r --exclude=.svn ./ab1/src ./abc2/

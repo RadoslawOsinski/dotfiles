@@ -1,0 +1,30 @@
+konfiguracja sieci w GENTOO:
+
+STATYCZNE USTAWIENIE TO:
+1. Zawartość /etc/resolv.conf
+search babilon.pw.edu.pl
+nameserver 10.7.0.2
+nameserver 194.29.137.82
+nameserver 194.29.137.83
+nameserver 193.0.71.130
+2. Zawartość /etc/conf.d/net
+config_eth0=("10.7.56.37 netmask 255.255.0.0 broadcast 10.7.255.255")
+routes_eth0=("default via 10.7.0.2")
+
+DYNAMICZNE USTAWIENIE NA PODSTAWIE DHCPD TO:
+1. Zawartość /etc/resolv.conf (AUTOMATYCZNIE NADPISYWANA PO URUCHOMIENIU SERWERA DHCPD)
+search babilon.pw.edu.pl
+nameserver 10.7.0.2
+nameserver 194.29.137.82
+nameserver 194.29.137.83
+nameserver 193.0.71.130
+2. Zawartość /etc/conf.d/net
+config_eth0=("dhcp")
+#dhcp_eth0="nodns nontp nonis"	#zakomentowana linia
+
+3. STATYCZNE USTWAWIENIE W DOMU (przy założeniu że udostępniający neta to 192.168.0.1):
+1. Zawartość /etc/resolv.conf
+nameserver 192.168.0.1
+2. Zawartość /etc/conf.d/net
+config_eth0=("192.168.0.2 netmask 255.255.255.0 broadcast 255.255.255.255")
+routes_eth0=("default via 192.168.0.1")

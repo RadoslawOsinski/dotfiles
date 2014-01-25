@@ -1,0 +1,5 @@
+mkdir /home/samba
+chmod 0777 /home/samba
+
+tworzy katalog do wymiany plików w windowsie/linuksie
+uruchamiam za pomocą /etc/init.d/samba start

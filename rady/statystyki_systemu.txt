@@ -1,0 +1,5 @@
+vmstat <=> statystyki wirtualnej pamięci
+iostat <=>
+sar <=>
+mpstat <=>
+free <=>

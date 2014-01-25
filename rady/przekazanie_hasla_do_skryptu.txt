@@ -1,0 +1,16 @@
+>> a jak to rozwiązać w przypadku innych aplikacji?
+>> >> 
+>> >> np. scp  mogę użyć klucza, ale co gdybym nie chciał tego zrobić, mogę
+>> >> jakoś w skrypcie  podać hasło?
+> > 
+> > man expect
+> > 
+i przykład skryptu:
+#!/usr/bin/expect -f
+set pass  "paslo"
+spawn ssh root@skin
+expect "*?assword:*"
+send  "$pass\r"
+expect eof
+
+umozliwia automatyczne logowanie na konto root na moim kompie

@@ -1,0 +1,2 @@
+emerge -v ati-drivers virtualbox-bin virtualbox-modules alsa-plugins alsa-lib alsa-firmware alsa-headers qemu-kvm
+

@@ -1,0 +1,2 @@
+wpisuję w gentoo:
+equery b nazwa_pliku_zjebanego

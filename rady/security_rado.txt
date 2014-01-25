@@ -1,0 +1,12 @@
+Znajduje wszystkie programy wykonywane jako suid/sgid:
+root# find / -type f \( -perm -04000 -o -perm -02000 \)
+
+Pliki bez nadanego użytkownika lub grupy mogą wskazywać na nie upoważniony dostęp. Znajduję za pomocą:
+root# find / -nouser -o -nogroup -print
+
+Programy weryfikujące integralność plików: tripwire, aide, osiris
+
+Programy do tworzenia kopii zapasowych: tar, cpio, dump, afio(kompresuje każdy plik z osobna), amanda(graficzny interfejs)
+
+
+

@@ -1,0 +1,2 @@
+Archiwizacja logów:
+zip -r zip_plik.zip folder_do_spakowania;

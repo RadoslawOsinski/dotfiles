@@ -1,0 +1,1 @@
+echo -e "subject: Test Email\nJust testing\n." | sendmail -f radoslaw.osinski@gmail.com radoslaw.osinski@gmail.com

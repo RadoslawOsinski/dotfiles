@@ -1,0 +1,11 @@
+[root@testbox root]# tail -n 3 /etc/passwd > passfile
+[root@testbox root]# tail -n 3 /etc/shadow > shdwfile
+[root@testbox root]# unshadow passfile shdwfile > johnfile
+[root@testbox root]# cd /etc
+[root@testbox etc]# john /root/johnfile
+Loaded 3 passwords with 3 different salts (FreeBSD MD5 [32/32])
+stuff           (chuck)
+junk            (stan)
+bill            (things)
+guesses: 3  time: 0:00:08:23 (3)  c/s: 1968  trying: things
+[root@testbox etc]#

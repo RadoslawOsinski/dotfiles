@@ -1,0 +1,5 @@
+w konsoli: ssh -D 8082 rosinsk1@galera.ii.pw.edu.pl
+w terminalu: tsocks dowolny_program
+np.
+w terminalu: tsocks mplayer
+http://scfire-dtc-aa06.stream.aol.com:80/stream/1022

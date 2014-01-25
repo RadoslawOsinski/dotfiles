@@ -1,0 +1,2 @@
+Poni¿sze polecenie pozwala zsynchronizowaæ zegar
+rdate -s -p ntp.task.gda.pl

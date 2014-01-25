@@ -1,0 +1,3 @@
+* hdiutil attach jdk-7u7-macosx-x64.dmg
+* cd /Volumes/JDK\ 7\ Update\ 07/
+* sudo installer -pkg JDK\ 7\ Update\ 07.pkg -target "/"

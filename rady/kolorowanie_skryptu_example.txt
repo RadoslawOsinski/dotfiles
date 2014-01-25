@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Kolorki :)
+none="\033[0m"
+green="\033[1;32m"
+redd="\033[1;31m"
+blue="\033[1;34m"
+
+DIRS="doc filmy iso mp3 pics sources other studia"
+
+case $1 in
+"start")
+    #echo -e "${redd}*${none} Uruchamiam daemona ${blue}vsftpd${none}"
+    echo -e "${redd}*${none} Bindowanie nastepujacych katalogow: $DIRS"
+    for katalog in $DIRS
+    do
+	echo -e "${redd}-- ${green}/home/s4ros/$katalog ${redd}-> ${blue}/home/ftp/$katalog${none}"
+	mount -o bind /home/s4ros/$katalog /home/ftp/$katalog
+    done
+    /etc/init.d/vsftpd start
+#    sleep 2
+;;
+"stop")
+    #echo -e "Zatrzymuje daemona ${blue}vsftpd${none}"
+    echo -e "Odmountowuje katalogi: ${blue}$DIRS${none}"
+    for katalog in $DIRS
+    do
+	echo -e "${redd}-- ${green}/home/ftp/$katalog${none}"
+	umount /home/ftp/$katalog
+    done
+    /etc/init.d/vsftpd stop
+    ;;
+*)
+    echo "Usage $0 start|stop"
+esac

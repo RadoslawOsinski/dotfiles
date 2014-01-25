@@ -1,0 +1,14 @@
+WEB_BROWSER:
+ssh -D 8080 -Nf rosinsk1@mion.elka.pw.edu.pl
+a w firefox ustawiam port na: localhost:8080
+--------------------------------------------------------------------
+RADIO:
+
+w konsoli:
+ssh -l rosinsk1 mion.elka.pw.edu.pl -L  8000:127.0.0.1:8000
+
+w przegladarce otworzyc adres radia:
+http://scfire-dtc-aa06.stream.aol.com:80/stream/1022
+
+w konsoli mplayer na pliku *.part
+należy później usunąć plik

@@ -1,0 +1,4 @@
+polecenie pozwalające nagrać w formacie wideo zawartość pulpitu do formatu .ogv
+
+recordmydesktop filename
+

@@ -1,0 +1,300 @@
+iptables zna praktycznie każdy użytkownik Linuksa. Niektórzy właśnie od niego
+zaczęli swoją przygodę z pingwinem stawiając darmowy serwer usługi
+NAT+firewall. W większości przypadków to jedyne zadania jakie powierzamy
+iptables nie zdając sobie sprawy z jego potencjału. W artykule tym omówię jak
+przy pomocy iptables oraz psad stworzyć solidny system wykrywania ataków oraz
+aktywnej ochrony.
+iptables – podstawowa konfiguracja
+Na początek przedstawię prostą konfigurację iptables. Ważne linie zostały
+pogrubione. Przy tworzeniu zapory warto na nie zwrócić uwagę. 
+
+echo -e "Konfiguracja iptables...\n * czyszczenie reguł"
+iptables -F
+iptables -F -t nat
+iptables -X
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+modprobe ip_conntrack
+modprobe iptable_nat
+modprobe ip_conntrack_ftp
+modprobe ip_nat_ftp
+#siec wewnetrzna
+INT=192.168.11.0/24
+echo " * regulki INPUT"
+iptables -A INPUT -m state --state INVALID -j LOG --log-prefix "INPUT DROP
+INVALID " --log-ip-options --log-tcp-options
+iptables -A INPUT -m state --state INVALID -j DROP
+#stateful filreting
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#anti-spoofing
+iptables -A INPUT -i eth1 -s ! $INT -j LOG --log-prefix "INPUT SPOOFED PKT "
+iptables -A INPUT -i eth1 -s ! $INT -j DROP
+#accept
+iptables -A INPUT -i eth1 -p tcp -m multiport --dports
+21,22,25,43,80,443,4321,53 --syn -m state --state NEW -j ACCEPT
+iptables -A INPUT -j LOG --log-ip-options
+iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+#domyslnie LOG i DROP
+iptables -A INPUT -i ! lo -j LOG --log-prefix "INPUT DROP " --log-ip-options
+--log-tcp-options
+echo " * regulki OUTPUT"
+iptables -A OUTPUT -m state --state INVALID -j LOG --log-prefix "OUTPUT DROP
+INVALID " --log-ip-options --log-tcp-options
+iptables -A OUTPUT -m state --state INVALID -j DROP
+iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#accept
+iptables -A OUTPUT -p tcp -m multiport --dports 21,22,25,43,80,443,4321,53
+--syn -m state --state NEW -j ACCEPT
+iptables -A OUTPUT -p udp --dport 53 -m state --state NEW -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+#domyslnie LOG i DROP
+iptables -A OUTPUT -o ! lo -j LOG --log-prefix "OUTPUT DROP " --log-ip-options
+--log-tcp-options
+echo " * regulki FORWARD"
+iptables -A FORWARD -m state --state INVALID -j LOG --log-prefix "FORWARD DROP
+INVALID " --log-ip-options --log-tcp-options
+iptables -A FORWARD -m state --state INVALID -j DROP
+iptables -A FORWARD -i eth1 -s ! $INT -j LOG --log-prefix "FORWARD SPOOFED PKT
+"
+iptables -A FORWARD -i eth1 -s ! $INT -j DROP
+#accept
+iptables -A FORWARD -p tcp -m multiport --dports 21,22,25,43,80,443,4321 --syn
+-m state --state NEW -j ACCEPT
+iptables -A FORWARD -p tcp --dport 53 -m state --state NEW -j ACCEPT
+iptables -A FORWARD -p udp --dport 53 -m state --state NEW -j ACCEPT
+iptables -A FORWARD -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A FORWARD -i ! lo -j LOG --log-prefix "FORWARD DROP "
+--log-ip-options --log-tcp-options
+echo " * regulki NAT"
+iptables -t nat -A POSTROUTING -s $INT -o eth0 -j MASQUERADE
+echo " * IP forward enable"
+echo 1 > /proc/sys/net/ipv4/ip_forward
+echo "Gotowe"
+Nasza polityka bezpieczeństwa zakłada, że dopuszczamy usługi SSH, FTP, HTTP,
+HTTPS, DNS oraz whois. Dopuszczamy nowe połączenia (NEW) wybranych usług oraz
+te, które w jakiś sposób związane są z połączeniami już otwartymi
+(ESTABLISHED, RELATED). Dodatkowo zlecamy iptables logowanie pakietów
+niepasujących do polityki (”zabłąkane” pakiety, skanowanie portów) oraz
+niezwiązanych z żadnymi połączeniami (INVALID). Dopuszczalne pakiety
+przechodzą dalej, niechciane są logowane i odrzucane. Jakkolwiek dziwnym może
+się wydawać, iż najważniejsze dla ochrony jest logowanie połączeń, w istocie
+iptables najpierw musi dostarczyć nam informacji, na podstawie których
+będziemy się bronić. 
+iptables – wykrywanie zagrożeń
+Po stworzeniu zapory warto zwrócić uwagę jak zareaguje na żądania nie pasujące
+do przewidzianych w polityce bezpieczeństwa. Zapora ma adres 192.168.11.105,
+atakujący komputer 192.168.11.99.
+Na początek połączenie TCP z portem 5555: 
+nc -v 192.168.11.105 5555 
+iptables odrzuca żądanie: 
+Jan 11 04:45:00 debian kernel: [ 6391.817203] INPUT DROP IN=eth1 OUT=
+MAC=08:00:27:01:c8:8c:00:13:8f:76:60:68:08:00 SRC=192.168.11.99
+DST=192.168.11.105 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=28471 DF PROTO=TCP
+SPT=39115 DPT=5555 WINDOW=5840 RES=0x00 SYN URGP=0 OPT
+(020405B40402080A00D1F4980000000001030306) 
+Następnie próba połączenia UDP: 
+hping3 -2 -p 5555 192.168.11.105 
+iptables ponownie raportuje:
+Jan 11 04:53:02 debian kernel: [ 6874.006107] INPUT DROP IN=eth1 OUT=
+MAC=08:00:27:01:c8:8c:00:13:8f:76:60:68:08:00 SRC=192.168.11.99
+DST=192.168.11.105 LEN=28 TOS=0x00 PREC=0x00 TTL=64 ID=58508 PROTO=UDP
+SPT=2349 DPT=5555 LEN=8 
+i trzecia próba – polityka przewiduje odpowiedź tylko na żądanie ICMP Echo
+więc zobaczmy co się stanie gdy prześlemy odpowiedź ICMP Echo: 
+
+hping3 -1 --icmptype echo-reply 192.168.11.105
+iptables ponownie raportuje niewłaściwy pakiet: 
+Jan 11 05:02:33 debian kernel: [ 7444.418491] INPUT DROP INVALID IN=eth1 OUT=
+MAC=08:00:27:01:c8:8c:00:13:8f:76:60:68:08:00 SRC=192.168.11.99
+DST=192.168.11.105 LEN=28 TOS=0x00 PREC=0x00 TTL=64 ID=20689 PROTO=ICMP TYPE=0
+CODE=0 ID=42033 SEQ=1280 
+Przyjrzyjmy się dwu pierwszym raportom. Opcja –log-tcp-options rozszerza
+standardowy log iptables o pola portów źródłowych oraz docelowych, flagi, okno
+ECN, znacznik zarezerwowane i opcje w przypadku segmentu TCP natomiast w
+przypadku datagramu UDP dodaje jego długość oraz informacje o portach
+źródłowym i docelowym. Dzięki opcji –log-ip-options logowane są także opcje
+nagłówka IP. Informacje te przydadzą się przy dalszej analizie. 
+psad czyli trochę magii
+Chociaż moglibyśmy analizować log linijka po linijce lepiej poświęcić się
+mniej mechanicznym zajęciom a nudne zadanie powierzyć komuś innemu – psad.
+Port Scan Attack Detector został popełniony przez eksperta w dziedzinie
+ochrony sieci, Machaela Rasha. Skrypt ten analizuje informacje dostarczane
+przez iptables w poszukiwaniu podejrzanych działań jak skanowanie portów,
+ataków DDoS a także śladów backdoorów. W połączeniu z fwsnort może wykrywać i
+generować alarmy również w przypadku ataków na warstwę aplikacji. psad
+korzystając z danych p0f (oraz rozszerzonych logów iptables) umożliwia również
+pasywne wykrywanie systemu operacyjnego używanego przez atakującego. Oprócz
+tego potrafi automatycznie uruchomić aktywną ochronę w postacji czasowego
+blokowania adresów IP (domyślnie wyłączone) oraz wysyła szczegółowe raporty
+pocztą elektroniczną. 
+Instalacja w systemie debian nie jest do końca zautomatyzowana. Po wydaniu
+polecenia: 
+aptitude install psad 
+pojawia się komunikat: 
+ERR: Syslog has not been configured to send messages to
+/var/lib/psad/psadfifo.
+Please configure it as described in psad(8). 
+Cała dodatkowa konfiguracja sprowadza się do dodania linijki na końcu
+/etc/syslog.conf: 
+kern.info |/var/lib/psad/psadfifo
+Po dopisaniu powyższego uruchamiamy uaktualniamy sygnatury psad przy pomocy:
+psad --sig-update
+a następnie uruchamiamy poleceniem:
+/etc/init.d/psad start
+psad zakłada, że logowane są tylko odrzucane pakiety (polityka log&drop) i
+sprawdza przed uruchomieniem poprawnośc ustawień iptables w łańcuchu INPUT
+oraz FORWARD. Jeśli wymaganych reguł brakuje psad informuje o tym.
+Konfiguracja narzędzia znajduje się w 
+/etc/psad/psad.conf
+i zawiera ponad 100 parametrów. Na razie pozostańmy przy konifguracji
+domyślnej i zajrzymjy do logów w poszukiwaniu informacji od psad. 
+psad analizuje logi i informuje o zagrożeniach 
+Zabaczmy jak psad zareaguje na próbę skanowania portów TCP connect(): 
+nmap -sT -n 192.168.11.105 --max-rtt-timeout 500 
+oprócz informacji iptables w logu pojawia się komunikat od psad 
+Jan 11 05:13:55 debian psad: scan detected: 192.168.11.99 -> 192.168.11.105
+tcp: [13-65389] flags: SYN tcp pkts: 1098 DL: 5
+Nie ma potrzeby analizowania każdej informacji od iptables z osobna – psad
+analizuje je za nas i informuje o zagrożeniach.
+Informacja zawiera adres IP skąd zarejestrowano skanowanie (warto pamiętać, że
+adres ten może być sfałszowany) a także zakres skanowanych portów i liczbę
+pakietów. DL oznacza poziom zagrożenia wedle poziomów zdefiniowanych w: 
+/etc/psad/psad.conf 
+(zmienne DANGER_LEVEL).
+Należy zaznaczyć, że ponieważ w logach iptables nie ma jednoznacznej
+informacji w jakim łańcuchu wykryto logowane zagrożenie psad przyjmuje
+następujące założenia: 
+komunikaty, które nie zawierają interfejsu wyjściowego pochodzą z reguł
+łańcucha INPUT
+komunikaty, które nie zawierają interfejsu wejściowego pochodzą z reguł
+łańcucha OUTPUT
+komunikaty, które zawierają oba interfejsy pochodzą z reguł łańcucha FORWARD
+Skanowanie TCP FIN: 
+nmap -v -sF -n 192.168.11.105 --max-rtt-timeout 500 
+i ponownie psad informuje o zdarzeniu: 
+Jan 11 05:18:23 debian psad: scan detected: 192.168.11.99 -> 192.168.11.105
+tcp: [1-65389] flags: FIN tcp pkts: 2000 DL: 4 
+W przypadku gdy DL zdarzenia przekroczy EMAIL_ALERT_DANGER_LEVEL psad wyśle
+e-mail z informacją o zdarzeniu do administratora systemu. Informacja ta
+zawiera poziom zagrożenia, porty i flagi skanowania, źródłowy i docelowy adres
+IP, liczbę e-maili dotyczących tego źródła zagrożenia, zakres skanowanych
+portów oraz informacje z bazy whois. psad przechowuje sporo informacji o
+zdarzeniach w katalogu /var/log/psad. Na przykład katalog
+/var/log/psad/192.168.11.99 zawiera informacje whois dla adresu, ostatni alert
+wysłany e-mailem do administratora, znacznik czasowy pierwszego podejrzanego
+pakietu, aktualny stopień zagrożenia oraz plik z wynikiem pasywnego skanowania
+systemu operacyjnego. Ponieważ niewygodne jest ręczne przedzieranie się przez
+katalogi
+psad --Status 
+udostępnia informacje o aktualnym statusie serwera psad, 
+psad -A 
+natomiast analizuje archiwalne logi iptables znajdujące się w
+/var/log/messages. 
+psad na straży porządku
+Zanim przejdziemy teraz do konfiguracji aktywnej ochrony systemu przed
+zagrożeniem należy zauważyć, iż zgodnie z prawem Murphy’ego każde rozwiązanie
+rodzi nowe problemy. Napastnik może szybko zauważyć aktywne blokowanie źródeł
+zagrożeń i obrócić to przeciwko chronionemu systemowi. psad umożliwia więc
+dodanie białej listy zawierającej komputery i sieci, które nigdy nie powinny
+być blokowane.
+W ramach aktywnej ochrony systemu psad umożliwia m.in.:
+ręczne dodanie lub usunięcie reguły blokującej zadany adres IP – opcje
+--fw-block-ip oraz --fw-rm-block-ip
+podgląd w statusie psad aktualnie zablokowanych adresów wraz z czasem do ich
+odblokowania
+dodawanie niekolidujących z dowolną polityką bezpieczeństwa reguł iptables
+blokujących napastników (reguły dodawane są w osobnym łańcuchu)
+konfigurowanie minimalnego poziomu zagrożenia związanego z blokowaniem
+blokowanie stałe lub tymczasowe
+informowanie za pomocą e-mail o dodaniu blokady
+wybór czy blokady będą związane ze skanowaniem portów bądź atakami pasującymi
+do sygnatur
+Edytujemy zatem plik /etc/psad/psad.conf w celu uaktywnienia aktywnej obrony
+systemu. Najważniejszą zmienną jest ENABLE_AUTO_IDS, nadajmy jej wartość Y. W
+tym momencie aktywowane są pozostałe zmienne AUTO_IDS_DANGEL_LEVEL (zmieńmy na
+3) odpowiadająca za minimalny poziom zagrożenia skutkujący zablokowaniem
+adresu (dokładniejsze poziomy związane z konkretnymi adresami/sieciami można
+ustawic w /etc/psad/auto_dl), AUTO_BLOCK_TIMEOUT określająca czas blokady w
+sekundach (0 powoduje ustawienie blokady stałej, gdy FLUSH_IPT_AT_INIT ma
+wartość Y blokada usuwana jest przy restarcie psad/systemu). Ważną zmienną
+jest IPT_AUTO_CHAIN, która określa tworzenie reguł blokujących – domyślnie
+konfiguruje 3 dodatkowe łańcuchy PSAD_BLOCK_INPUT, PSAD_BLOCK_OUTPUT oraz
+PSAD_BLOCK_FORWARD. Dla łańcuchów tych ustawiane są reguły DROP związane z
+adresem napastnika uniemożliwiające komunikację zarówno z firewallem jak i
+chronionymi maszynami pracującymi w sieci lokalnej.
+Restartujemy psad i próbujemy skanowania portów TCP SYN: 
+#/etc/init.d/psad restart
+#nmap -sS -P0 -n 192.168.11.105 
+(...)
+#tail /var/log/messages
+Jan 11 05:33:18 debian psad: scan detected: 192.168.11.99 -> 192.168.11.105
+tcp: [3-65389] flags: SYN tcp pkts: 1877 DL: 5
+Jan 11 05:33:20 debian psad: added iptables auto-block against 192.168.11.99
+for 3600 seconds 
+Napastnik został zablokowany na godzinę. Aktualny stan blokad możemy uzyskać
+na dwa sposoby: 
+#psad --Status
+(...)
+iptables auto-blocked IPs:
+192.168.11.99 (3413 seconds remaining)
+(...)
+# psad --fw-list
+[+] Listing chains from IPT_AUTO_CHAIN keywords...
+Chain PSAD_BLOCK_INPUT (1 references)
+pkts bytes target prot opt in out source destination 
+
+1133 49852 DROP all -- * * 192.168.11.99 0.0.0.0/0 
+Chain PSAD_BLOCK_OUTPUT (1 references)
+pkts bytes target prot opt in out source destination 
+
+0 0 DROP all -- * * 0.0.0.0/0 192.168.11.99 
+Chain PSAD_BLOCK_FORWARD (1 references)
+pkts bytes target prot opt in out source destination 
+
+0 0 DROP all -- * * 0.0.0.0/0 192.168.11.99 
+0 0 DROP all -- * * 192.168.11.99 0.0.0.0/0 
+
+Blokada zostanie usunięta po upływie określonego czasu lub po wydaniu
+polecenia: 
+#psad --fw-rm-block-ip 192.168.11.99
+[+] Writing 192.168.11.99 to socket; psad will remove the IP
+within 5 seconds.
+#tail /var/log/messages
+Jan 11 05:37:01 debian psad: removed iptables auto-block against 192.168.11.99 
+Wszystko działa jak powinno. Rozważmy jednak następującą sytuację. Napastnik
+domniema, iż skanowanie portów skutkuje blokadą adresu IP, zauważył też, że
+system atakowany stoi na łączu TP DSL i wykonał następujące polecenie 
+nmap -sS -P0 -S 194.204.159.1 -e eth1 -n 83.16.X.X 
+po chwili psad blokuje adres serwera DNS: 
+Jan 11 09:27:06 debian psad: added iptables auto-block against 194.204.159.1
+for 3600 seconds 
+Jeśli powtórzyć operację dla drugiego serwera DNS istnieje duże
+prawdopodobieństwo praliżu pracy przedsiębiorstwa za firewallem. Aby uchronić
+się przed podobną sytuacją należy dodać zaufane adresy, które nie powinny być
+blokowane do pliku /etc/psad/auto_dl z poziomem zagrożenia równym 0. 
+psad, swatch i ssh
+psad posiada naprawdę spore możliwości. W połączeniu z regułami Snort pozwala
+również reagować na zagrożenia w warstwie aplikacji. Dodatkowo samemu można
+wykorzystać go we własnych skryptach lub wraz z innymi narzędziami co zostanie
+pokazane poniżej. Implementacja blokowania adresu IP, z którego nie powiodło
+się logowanie ssh zrealizujemy przy pomocy swatch, który na bieżąco analizuje
+/var/log/auth.log w poszukiwaniu informacji o nieudanym logowaniu ssh.
+Tworzymy plik swatchrc o poniższej zawartości: 
+
+watchfor
+/sshd.*authentication\s*failures.*rhost.((?:[0-2]?\d{1,2}\.){3}[0-2]?\d{1,2}).*/
+echo mode=red
+exec "/usr/sbin/psad --fw-block-ip $1"
+po czym uruchamiamy z linii poleceń:
+#swatch --config-file=swatchrc --tail-file=/var/log/auth.log
+*** swatch version 3.2.1 (pid:4186) started at Tue Jan 11 10:14:34 CET 2009
+Jan 11 10:14:51 debian sshd[4190]: PAM 2 more authentication failures;
+logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.11.88 user=root
+[+] Writing 192.168.11.88 to socket; psad will add the IP
+within 5 seconds.
+Po paru nieudanych logowaniach przez ssh adres IP jest blokowany. 
+Dziękuję za uwagę. Mam nadzieję, że artykuł zachęci do dalszego poznawania
+możliwości psad, a być może pomoże skutecznie ochronić czyjeś cenne zasoby  
+Autor: Łukasz Międzybrodzki
+Skład: Swamper

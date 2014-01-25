@@ -1,0 +1,103 @@
+The console
+
+At the console, you may want to use the Euro and Dollar keys. The easiest way would be for you to grab my keymap file and copy it to /usr/share/keymaps/i386/qwerty. You then need to edit /etc/conf.d/keymap and set
+
+KEYMAP="acer5021"
+
+If you do not have a querty keyboard, or want to create your own keymap file, just add
+
+keycode 132 = euro
+keycode 133 = dollar
+
+to your own file.
+
+The last thing you need is a font that will actually display the Euro sign. Edit /etc/conf.c/consolefont and set, for example
+
+CONSOLEFONT="lat9w-16"
+
+You can now reboot and use the keys. By using the key between right-alt and right ctrl or the windows key, you can now compose characters like ç on the console
+X Windows
+
+All the keys generate X-events, but you need to maps those to symbols. There are 2 ways to do that.
+Quick and Dirty
+Grab my .Xmodmap, copy it to .Xmodmap in your home directory and do a
+
+xmodmap ~/.Xmodmap
+
+In some cases, simply having the file .Xmodmap in your home directory will be enough. In others, you will need to put the above command in .xsession or .xinitrc. Thomas Deutch suggested creating a Shortcut to program in ~/.kde/Autostart to run the command eachtime KDE is started.
+
+If you have more than one user on your laptop, each user must set this up.
+The hard, but correct, way
+
+First you must modify 4 files to register the new mappings. This is for the new modular X setup. The files are (click on the name to get my copy of the file):
+
+    * /usr/share/X11/xkb/symbols/inet
+    * /usr/share/X11/xkb/rules/xorg
+    * /usr/share/X11/xkb/rules/xorg.lst
+    * /usr/share/X11/xkb/rules/xorg.xml
+
+The inet file contains the key mapping. The various mappings are sorted alphanumerically. At the time of this writting, July 2005, it should be placed in second position, after the airkey entry and before the azona one. The mapping is:
+
+//
+// keycode mapping for Aspire 5021 laptop
+// by François Wautier < linux at fwconsult dot com >
+partial alphanumeric_keys
+xkb_symbols "aspire5020" {
+    name[Group1]= "Acer Aspire 5020 Series Laptop";
+
+    // Audio buttons
+    key <I10>	{	[ XF86AudioPrev		]	};
+    key <I22>	{	[ XF86AudioPlay, XF86AudioPause ] };
+    key <I24>	{	[ XF86AudioStop, XF86Eject ]	};
+    key <I19>	{	[ XF86AudioNext		]	};
+    key <I30>	{	[ XF86AudioRaiseVolume	]	};
+    key <I2E>	{	[ XF86AudioLowerVolume	]	};
+    key <I20>	{	[ XF86AudioMute		]	};
+    // Internet Buttons
+    key <I32>	{	[ XF86WWW		]	};
+    key <I6C>	{	[ XF86Mail		]	};
+    key <K64>	{	[ XF86Launch0		]	};  // P button
+    key <K65>	{	[ XF86Launch1		]	};  // e Button
+    key <FK17>	{	[ XF86Launch2		]	};  // WLAN button (Not active)
+    key <K68>	{	[ XF86Launch7		]	};  // WLAN button (active)
+    // Probably needs Not Active Bluetooth key.
+    key <I3C>	{	[ XF86Launch3		]	};  // bluetooth button
+    //Function Buttons
+    key <I75>	{	[ XF86Launch4		]	};  // Fn + ? (F1)
+    key <I1E>	{	[ XF86Launch5		]	};  // Fn + pie (F2)
+    key <I21>	{	[ XF86Launch6		]	};  // Fn + V mark (F3)
+    key <I5F>	{	[ XF86Sleep		]	};  // Fn + z (F4)
+    key <K66>	{	[ XF86Xfer		]	};  // Fn + Displaya(F5)
+    key <K67>	{	[ XF86RockerDown	]	};  // Fn + Touchpad switch (F7)
+    key <I63>	{	[ XF86RockerUp		]	};  // Fn + Touchpad switch (F7)
+    // Some extra chars keys
+    key <I0C>	{	[ EuroSign		]	};
+    key <I78>	{	[ dollar		]	};
+    key <LWIN>	{	[ Super_L		]	};
+    key <MENU>	{	[ XF86MenuKB		]	};
+};
+
+As you can see above, I gave the keyboard the name aspire5020. That name must be added to xorg and xorg.list. The modifications are trivial, just look for the string airkey
+
+The modification to xorg.xml is no less trivial. I suggest you add this:
+
+<model>
+  <configItem>
+    <name>aspire5020</name>
+    <description>Acer Aspire 5020 Series Laptop</description>
+    <description xml:lang="fr">Portable Acer Aspire Série 5020</description>
+  </configItem>
+</model>
+
+Now that the mapping is defined, you need to use it. For that you need to edit /etc/X11/xorg.conf (mine is here) and change the keyboard entry so that it looks like this:
+
+Section "InputDevice"
+        Identifier  "Keyboard0"
+        Driver          "keyboard"
+        Option          "XkbRules"      "xorg"
+        Option          "XkbModel"      "aspire5020"
+        Option          "XkbLayout"     "us"
+        #Option         "XkbVariant"    "nodeadkeys"
+EndSection
+
+Restart X and you should be all set.

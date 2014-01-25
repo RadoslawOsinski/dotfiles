@@ -1,0 +1,4 @@
+Mamy film, i chcemy zgrać dźwięk z przedialu (02:38 /04:52) do postaci .mp3
+
+mplayer film.avi -ss 00:02:38 -endpos 00:02:14 -vc null -vo null -ao pcm:fast
+lame audiodump.wav audio.mp3

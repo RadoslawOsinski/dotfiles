@@ -1,0 +1,5 @@
+Tworzenie sessji nazwanej: 	screen -dR radek
+Podłączenie do sesji tak samo: 	screen -dR radek
+CTRL + A potem CTRL + D:	odłącza od sessji (detach)
+CTRL + D:			zabija sesję
+screen -list:			listuje sesje żyjące

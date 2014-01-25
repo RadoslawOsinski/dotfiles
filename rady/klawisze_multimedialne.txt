@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+liniment.de &raquo; Special Keys on your Keyboard</title>
+<meta name="generator" content="WordPress 2.5.1" />
+<!-- leave this for stats please -->
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://liniment.mvbubachcalmesweiler.de/?feed=rss2" />
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://liniment.mvbubachcalmesweiler.de/?feed=rss" />
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://liniment.mvbubachcalmesweiler.de/?feed=atom" />
+<link rel="pingback" href="http://liniment.mvbubachcalmesweiler.de/xmlrpc.php" />
+	<link rel='archives' title='Mai 2008' href='http://liniment.mvbubachcalmesweiler.de/?m=200805' />
+	<link rel='archives' title='M&auml;rz 2008' href='http://liniment.mvbubachcalmesweiler.de/?m=200803' />
+	<link rel='archives' title='Februar 2008' href='http://liniment.mvbubachcalmesweiler.de/?m=200802' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://liniment.mvbubachcalmesweiler.de/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://liniment.mvbubachcalmesweiler.de/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 2.5.1" />
+
+<style type="text/css" media="screen">
+		<!-- @import url( http://liniment.mvbubachcalmesweiler.de/wp-content/themes/sunshine/style.css ); -->
+</style>
+</head>
+<body>
+<div id="wrap">
+<div id="logo"><div id="tagline">
+<h1><a href="http://liniment.mvbubachcalmesweiler.de">liniment.de</a></h1>
+
+yet another useless weblog</div>
+<div>
+<p align="right">
+  <a href="?lang=en" target=_self><img src="flag_us.gif" border=1></a></p>
+</div>
+</div>
+<div id="topnav">
+
+<ul>
+      <li class="page_item page-item-8"><a href="http://liniment.mvbubachcalmesweiler.de/?page_id=8" title="English">English</a></li>
+<li class="page_item page-item-3"><a href="http://liniment.mvbubachcalmesweiler.de/?page_id=3" title="Rechtliches">Rechtliches</a></li>
+<li class="page_item page-item-2"><a href="http://liniment.mvbubachcalmesweiler.de/?page_id=2" title="Über..">Über..</a></li>
+    </ul>
+</div>
+
+<div id="content">
+    <div class="entry ">
+    <h3 class="entrytitle" id="post-10"> <a href="http://liniment.mvbubachcalmesweiler.de/?p=10" rel="bookmark">
+      Special Keys on your Keyboard      </a> </h3>
+	  <div class="entrymeta">
+        	Februar 25th, 2008&nbsp;&#124; Kategorie:&nbsp;<a href="http://liniment.mvbubachcalmesweiler.de/?cat=15" title="Alle Artikel in GNU/Linux [en] ansehen" rel="category">GNU/Linux [en]</a>		</div>
+    <div class="entrybody">
+      <p>In order to use the special keys on your keyboard or laptop like audio control or the &#8220;ThinkVantage&#8221; Button it is sometimes neccessary to do some tweaks on your system. Not all window managers directly know how to deal with these keys.</p>
+<p><span id="more-10"></span>This article is written because of my IBM/Lenovo ThinkPad I installed Ubuntu on. First of all I am a fan of the <a href="http://fluxbox.org" target="_blank">fluxbox</a> window manager which doesn&#8217;t offer a feature to configure the special keys. While the volume control in the upper left worked fine, the ThinkVantage Button and some other Fn- Keys like hibernate or suspend didn&#8217;t do what I expected. So I found out that there is a way through the XServer.</p>
+<p>The keyword is &#8220;<em>Xmodmap</em>&#8221; which binds keycodes coming from the hardware to particular key &#8220;names&#8221; you can use in the Xserver Environment. To define these patterns you must first find out the keycode of the given button. This can be done with <em>xev</em>. If you start xev in a terminal it opens a little window and produces some messages in the terminal itself. To find out the key codes focus the external xev window and press the key on your keyboard. In the terminal will be something like this:<br />
+<code><br />
+KeyRelease event, serial 32, synthetic NO, window 0x2200001,<br />
+root 0xa1, subw 0x0, time 1355270960, (119,75), root:(164,143),<br />
+state 0x10, keycode 67 (keysym 0xffbe, F1), same_screen YES,<br />
+XLookupString gives 0 bytes:<br />
+XFilterEvent returns: False<br />
+</code></p>
+<p>As you can see the keycode here is 67 (it was the F1 key as you can see, too <img src='http://liniment.mvbubachcalmesweiler.de/wp-includes/images/smilies/icon_wink.gif' alt=';-)' class='wp-smiley' /> ). Now take it and open the file ~/.Xmodmap. This file is used to declare the keynames in the Xserver Environment. Type</p>
+<p><code>keycode 67 = XF86Launch1</code></p>
+<p>for every key you want to bind, where XF86Launch1 must be different for every single keybinding. Here is a list of XF86-Keys you can use:</p>
+<blockquote><p>XF86AddFavorite<br />
+XF86ApplicationLeft<br />
+XF86ApplicationRight<br />
+XF86AudioMedia<br />
+XF86AudioMute<br />
+XF86AudioNext<br />
+XF86AudioPause<br />
+XF86AudioPlay<br />
+XF86AudioPrev<br />
+XF86AudioLowerVolume<br />
+XF86AudioRaiseVolume<br />
+XF86AudioRecord<br />
+XF86AudioRewind<br />
+XF86AudioStop<br />
+XF86Away<br />
+XF86Back<br />
+XF86Book<br />
+XF86BrightnessAdjust<br />
+XF86CD<br />
+XF86Calculator<br />
+XF86Calendar<br />
+XF86Clear<br />
+XF86ClearGrab<br />
+XF86Close<br />
+XF86Community<br />
+XF86ContrastAdjust<br />
+XF86Copy<br />
+XF86Cut<br />
+XF86DOS<br />
+XF86Display<br />
+XF86Documents<br />
+XF86Eject<br />
+XF86Excel<br />
+XF86Explorer<br />
+XF86Favorites<br />
+XF86Finance<br />
+XF86Forward<br />
+XF86Game<br />
+XF86Go<br />
+XF86History<br />
+XF86HomePage<br />
+XF86HotLinks<br />
+XF86Launch0<br />
+XF86Launch1<br />
+XF86Launch2<br />
+XF86Launch3<br />
+XF86Launch4<br />
+XF86Launch5<br />
+XF86Launch6<br />
+XF86Launch7<br />
+XF86Launch8<br />
+XF86Launch9<br />
+XF86LaunchA<br />
+XF86LaunchB<br />
+XF86LaunchC<br />
+XF86LaunchD<br />
+XF86LaunchE<br />
+XF86LaunchF<br />
+XF86LightBulb<br />
+XF86LogOff<br />
+XF86Mail<br />
+XF86MailForward<br />
+XF86Market<br />
+XF86Meeting<br />
+XF86Memo<br />
+XF86MenuKB<br />
+XF86MenuPB<br />
+XF86Messenger<br />
+XF86Music<br />
+XF86MyComputer<br />
+XF86MySites<br />
+XF86New<br />
+XF86News<br />
+XF86Next_VMode<br />
+XF86Prev_VMode<br />
+XF86OfficeHome<br />
+XF86Open<br />
+XF86OpenURL<br />
+XF86Option<br />
+XF86Paste<br />
+XF86Phone<br />
+XF86Pictures<br />
+XF86PowerDown<br />
+XF86PowerOff<br />
+XF86Next_VMode<br />
+XF86Prev_VMode<br />
+XF86Q<br />
+XF86Refresh<br />
+XF86Reload<br />
+XF86Reply<br />
+XF86RockerDown<br />
+XF86RockerEnter<br />
+XF86RockerUp<br />
+XF86RotateWindows<br />
+XF86RotationKB<br />
+XF86RotationPB<br />
+XF86Save<br />
+XF86ScreenSaver<br />
+XF86ScrollClick<br />
+XF86ScrollDown<br />
+XF86ScrollUp<br />
+XF86Search<br />
+XF86Send<br />
+XF86Shop<br />
+XF86Sleep<br />
+XF86Spell<br />
+XF86SplitScreen<br />
+XF86Standby<br />
+XF86Start<br />
+XF86Stop<br />
+XF86Support<br />
+XF86Switch_VT_1<br />
+XF86Switch_VT_10<br />
+XF86Switch_VT_11<br />
+XF86Switch_VT_12<br />
+XF86Switch_VT_2<br />
+XF86Switch_VT_3<br />
+XF86Switch_VT_4<br />
+XF86Switch_VT_5<br />
+XF86Switch_VT_6<br />
+XF86Switch_VT_7<br />
+XF86Switch_VT_8<br />
+XF86Switch_VT_9<br />
+XF86TaskPane<br />
+XF86Terminal<br />
+XF86ToDoList<br />
+XF86Tools<br />
+XF86Travel<br />
+XF86Ungrab<br />
+XF86User1KB<br />
+XF86User2KB<br />
+XF86UserPB<br />
+XF86VendorHome<br />
+XF86Video<br />
+XF86WWW<br />
+XF86WakeUp<br />
+XF86WebCam<br />
+XF86WheelButton<br />
+XF86Word<br />
+XF86XF86BackForward<br />
+XF86Xfer<br />
+XF86ZoomIn<br />
+XF86ZoomOut<br />
+XF86iTouch</p></blockquote>
+<p>After editing the file, type<br />
+<code>xmodmap ~/.Xmodmap</code><br />
+Now you are able to use the keys in your preferred Desktop Environment or window manager.</p>
+<p>To give you a little example here is a part of my ~/.fluxbox/keys file:<br />
+<code><br />
+None XF86Launch1 :ExecCommand xterm -vb -fg grey -bg black -fs 9 -fa "Lucida Console"<br />
+#notebook extras<br />
+None XF86Standby :ExecCommand sudo /etc/acpi/sleep.sh</code></p>
+<p>Finally if we follow our example the F1 key would now open an xterm with the given options.</p>
+      </div>
+      <div class="entrymetabottom">
+        <span class="entrymeta-home">
+      Der Eintrag wurde verfasst am&nbsp;25. Februar 2008&nbsp;um      &nbsp;19:49&nbsp;und wurde abgelegt unter&nbsp;<a href="http://liniment.mvbubachcalmesweiler.de/?cat=15" title="Alle Artikel in GNU/Linux [en] ansehen" rel="category">GNU/Linux [en]</a>. 
+
+													Du kannst einen Kommentar oder&nbsp;<a href="http://liniment.mvbubachcalmesweiler.de/wp-trackback.php?p=10" rel="trackback">Trackback</a>&nbsp;von Deiner Seite hinterlassen.
+												
+
+		<span class="entryedit"></span></span>
+      </div>
+    
+    <!--
+	<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+			<rdf:Description rdf:about="http://liniment.mvbubachcalmesweiler.de/?p=10"
+    dc:identifier="http://liniment.mvbubachcalmesweiler.de/?p=10"
+    dc:title="Special Keys on your Keyboard"
+    trackback:ping="http://liniment.mvbubachcalmesweiler.de/wp-trackback.php?p=10" />
+</rdf:RDF>	-->
+  </div>
+  <div id="commentblock">
+  <!--comments area-->
+      <!-- If comments are open, but there are no comments. -->
+  <h2 id="comments">Keine Kommentare bis jetzt. Sei der Erste.</h2>
+        <!--comments form -->
+  <h2>Hinterlasse einen Kommentar</h2>
+    <div id="commentsform">
+    <form action="http://liniment.mvbubachcalmesweiler.de/wp-comments-post.php" method="post" id="commentform">
+            <p><small><strong>XHTML:</strong>Folgende Tags sind erlaubt:&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>
+      <p>
+        <input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+        <label for="author"><small>
+        name        (erforderlich)        </small></label>
+      </p>
+      <p>
+        <input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+        <label for="email"><small>
+        E-Mail        (
+        wird nicht angezeigt        )
+        (erforderlich)        </small></label>
+      </p>
+      <p>
+        <input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+        <label for="url"><small>
+        Webseite        </small></label>
+      </p>
+            <!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+      <p>
+        <textarea name="comment" id="comment" cols="50" rows="10" tabindex="4"></textarea>
+      </p>
+      <p>
+        <input name="submit" type="submit" id="submit" tabindex="5" value="Kommentar abschicken" />
+        <input type="hidden" name="comment_post_ID" value="10" />
+      </p>
+      <noscript><br /><br />
+<div style="background-color:#FFBFC1; border:solid 1px #B30004; color: #B30004; padding: 3px;">
+You need to enable javascript in order to use Simple CAPTCHA.</div></noscript>
+<script type="text/javascript">
+//<![CDATA[
+var count = 0;
+	function reloadCaptcha() {
+		frm = document.getElementById("simple_captcha");
+		opacity("simple_captcha", 100, 0, 300);
+		count++;
+		frm.src = "http://liniment.mvbubachcalmesweiler.de/wp-content/plugins/simple_captcha/gdimg.php?re=" + count;
+		opacity("simple_captcha", 0, 100, 300);
+	}
+	
+	function rand (mmin, mmax) {
+  		return ( Math.floor ( Math.random () * 100000 ) % mmax ) + mmin;
+	}
+	
+	function opacity(id, opacStart, opacEnd, millisec) {
+		//speed for each frame
+		var speed = Math.round(millisec / 100);
+		var timer = 0;
+	
+		//determine the direction for the blending, if start and end are the same nothing happens
+		if(opacStart > opacEnd) {
+			for(i = opacStart; i >= opacEnd; i--) {
+				setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
+				timer++;
+			}
+		} else if(opacStart < opacEnd) {
+			for(i = opacStart; i <= opacEnd; i++)
+				{
+				setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
+				timer++;
+			}
+		}
+	}
+
+	//change the opacity for different browsers
+	function changeOpac(opacity, id) {
+		var object = document.getElementById(id).style;
+		object.opacity = (opacity / 100);
+		object.MozOpacity = (opacity / 100);
+		object.KhtmlOpacity = (opacity / 100);
+		object.filter = "alpha(opacity=" + opacity + ")";
+	} 
+	
+	function pause( milisec ) {
+		sleep = milisec;
+    	begin = new Date();
+		start = begin.getTime();
+		done = false;
+		
+		while( !done ) {
+			alarm = new Date();
+			curr = alarm.getTime();
+			if( curr - start > sleep) {
+				done = true;
+				return;
+			}
+		}
+ 	}
+ 	
+	ff = document.getElementById("commentform");
+	ff.submit.style.display = "none";
+	submitVal = ff.submit.value;
+	
+//]]>
+</script>
+<div id="zrx_captcha" style="display:none;">
+<table style="width:100%;">
+	<tr>
+    	<td align="left" valign="middle" width="100">
+        Security Code:<br />
+        <input type="text" name="publicKey" style="width:90px;" maxlength="6" tabindex="5" class="textfield" />
+        </td>
+        <td align="left" valign="bottom" width="100">
+        <img id="simple_captcha" src="http://liniment.mvbubachcalmesweiler.de/wp-content/plugins/simple_captcha/gdimg.php?re=0" title="Simple CAPTCHA v1.3.1 by zorex" alt="" /></td>
+        <td align="left" valign="bottom">
+        <img src="http://liniment.mvbubachcalmesweiler.de/wp-content/plugins/simple_captcha/captcha_reload.gif" onClick="setTimeout('reloadCaptcha()', 300)" 
+        style="cursor:pointer" title="Request a new image" alt="" />
+        </td>
+	</tr>
+    <tr>
+    	<td colspan="3" align="center"><br /><input name="submit2" type="submit" tabindex="6" value="Dummy" /></td>
+    </tr>
+</table>
+</div>
+	<script type="text/javascript">
+//<![CDATA[
+	ff2 = document.getElementById("zrx_captcha");
+	ff2.style.display = "inline";
+	ff.submit2.value = submitVal;
+//]]>
+</script>    </form>
+  </div>
+    </div>
+    <p>
+      </p>
+  
+</div>
+<div id="sidebar">
+  
+  <div id="searchdiv">
+  <h2 class="search">Diese Seite durchsuchen</h2>
+    <form id="searchform" method="get" action="/index.php">
+      <input type="text" name="s" id="s" size="20"/>
+      <input name="sbutt" type="submit" value="Search" alt="Submit"  />
+    </form>
+  </div>
+  <ul>
+      </ul>
+  <h2>
+    Kategorien  </h2>
+  <ul>
+    	<li class="cat-item cat-item-1"><a href="http://liniment.mvbubachcalmesweiler.de/?cat=1" title="Alle unter Allgemein abgelegten Artikel ansehen">Allgemein</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://liniment.mvbubachcalmesweiler.de/?cat=8" title="Chili Pepper und alles, was zwei Mal brennt">Chili</a>
+</li>
+	<li class="cat-item cat-item-15"><a href="http://liniment.mvbubachcalmesweiler.de/?cat=15" title="Articles concerning the powerful operating system created by Linus Torvalds.
+Articles in English.">GNU/Linux [en]</a>
+</li>
+	<li class="cat-item cat-item-30"><a href="http://liniment.mvbubachcalmesweiler.de/?cat=30" title="just a few lines of code...">Programming [en]</a>
+</li>
+	<li class="cat-item cat-item-16"><a href="http://liniment.mvbubachcalmesweiler.de/?cat=16" title="Hints and other useful information.
+Articles in English">Tips and Tricks [en]</a>
+</li>
+<!-- ZUSATZ VON FIXJE -->
+	<li class="cat-item cat-item-0"><a href="index.php" title="Alle anzeigen/Show all">
+	ALLE ANZEIGEN	</a>
+</li>
+<!-- ENDE ZUSATZ -->
+  </ul>
+ <h2>Feeds</h2>
+  <ul class="feeds">
+   <li><a href="feed:http://liniment.mvbubachcalmesweiler.de/?feed=rss2">Artikel</a></li>
+   <li><a href="feed:http://liniment.mvbubachcalmesweiler.de/?feed=comments-rss2">Kommentare</a></li>
+  </ul>
+
+  <a href="http://www.vorratsdatenspeicherung.de/" target="_blank">
+<img src="http://wiki.vorratsdatenspeicherung.de/images/Nein_vorrat_236x60.gif" width="220px" height="49px" 
+alt="Stoppt die Vorratsdatenspeicherung - www.vorratsdatenspeicherung.de"
+border="0" title="Stoppt die Vorratsdatenspeicherung!">
+</a>
+
+</div>
+<!-- The main column ends  -->
+<!-- begin footer -->
+
+<div id="footer">
+		<p>
+			liniment.de powered by 
+
+		<a href="http://wordpress.org/" title="Wordpress">WordPress</a>. Theme by <a href="http://dmay.net/blog" title="Link to Theme Author">David May</a><br>Theme improved by <a href="http://liniment.de" title="" target=_blank>Markus Fuchs</a></p>
+</div>
+</div>
+<script src="http://stats.wordpress.com/e-200826.js" type="text/javascript"></script>
+<script type="text/javascript">
+st_go({blog:'2970757',v:'ext',post:'10'});
+var load_cmc = function(){linktracker_init(2970757,10,2);};
+if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+else load_cmc();
+</script>
+</body>
+</html>

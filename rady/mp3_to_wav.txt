@@ -1,0 +1,12 @@
+for i in *.mp3; do lame --decode  "$i" "`basename "$i" .mp3`".wav; done
+
+Extract Part of the Audio File:
+ sox old.wav new.wav trim [SECOND TO START] [SECONDS DURATION]
+
+WAV from mp4:
+mplayer -ao pcm inputfile.m4a -ao pcm:file="outfile.wav"
+
+MP3 from wav:
+
+MP3 from MP4:
+ffmpeg -i input.mp4 -acodec libmp3lame -ab 320 -ac 2 output.mp3
