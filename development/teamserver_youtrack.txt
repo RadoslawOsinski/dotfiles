@@ -24,7 +24,7 @@ pumba config # cat database.properties
 
 connectionUrl=jdbc:postgresql://10.0.0.10:5432/TeamCity
 connectionProperties.user=cwsfe
-connectionProperties.password=123str
+connectionProperties.password=password_changed
 
 # The maximum number of connections TeamCity can open on database server.
 maxConnections=50
@@ -52,4 +52,8 @@ Error: A fatal exception has occurred. Program will exit.
 
 ===============
 Youtrack:
-zmienić tylko na sztywną ścieżkę w web.xml po rozpakowaniu war :)
+zmienić tylko ścieżkę w web.xml po rozpakowaniu war :)
+....
+modify database.location parameter in file youtrack-xx.war:/WEB-INF/web.xml:
+ 
+change ${user.home}/teamsysdata to your own path
