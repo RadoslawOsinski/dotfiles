@@ -1,0 +1,2 @@
+Gdzie Publiczny to folder współdzielony
+net use X: \\vboxsvr\Publiczny
