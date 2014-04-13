@@ -1,0 +1,4 @@
+export JAVA_HOME=/usr/java/latest
+export JAVA_VENDOR=BEA
+. /opt/weblogic/.../server/bin/setWLSEnv.sh
+java weblogic.Deployer -debug -verbose -adminurl t3://remote.server.pl:7701 -username some_user -password some_password -deploy $WORKSPACE/artifact.ear -plan /path/../Plan.xml -upload
