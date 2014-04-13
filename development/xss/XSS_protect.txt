@@ -1,0 +1,9 @@
+I was testing some additional functionality that is available for security on Java EE 6 and EE 7 platforms. One item that is extremely important for all developers is avoiding Cross-Site Scripting (XSS) issues. This can normally be handled very easily by adding http-onlyto your web.xml configuration.
+
+
+<session-config>
+    <session-timeout>30</session-timeout>
+    <cookie-config>
+        <http-only>true</http-only>
+    </cookie-config>
+</session-config>
