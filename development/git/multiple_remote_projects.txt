@@ -1,0 +1,29 @@
+Problem:
+Piszemy jedną stronę WWW o nazwie "AAA" oraz drugą stronę o nazwie "CCC". Z tej strony "AAA" WWW wydzielamy stronę backend w postaci "BBB".
+Stronę "BBB" chcemy ponownie wykorzystać na stronie "CCC". Chemy mieć możliwość rozwijania strony "CCC" zarówno z projektu "AAA" jak i "BBB" w IDE.
+
+Rozwiązanie:
+W projekcie "AAA" tworzymy dwa "remote branches":
+git remote add origin_AAA ssh://sshusername@yourserver.com/~/myrepo_AAA.git
+git remote add origin_BBB ssh://sshusername@yourserver.com/~/myrepo_BBB.git
+
+W projekcie "CCC" tworzymy dwa "remote branches":
+git remote add origin_CCC ssh://sshusername@yourserver.com/~/myrepo_CCC.git
+git remote add origin_BBB ssh://sshusername@yourserver.com/~/myrepo_BBB.git
+
+Sprawdzenie czy są 2 remote branch (lub więcej :) )
+git remote -v
+
+W pierwszym projekcie AAA robimy:
+git fetch origin_AAA
+git pull origin_AAA
+git fetch origin_BBB
+git pull origin_BBB
+
+W drugim projekcie CCC robimy:
+git fetch origin_CCC
+git pull origin_CCC
+git fetch origin_BBB
+git pull origin_BBB
+
+Później pracując na gałęziach można commitować do projektu origin_BBB z projektu AAA oraz CCC. :)
