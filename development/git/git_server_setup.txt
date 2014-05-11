@@ -14,6 +14,11 @@ cd katalog_z_projektem
 git init;
 ---> wskazanie serwera git za pomocą:
 git remote add origin ssh://sshusername@yourserver.com/~/myrepo.git
+---> Nadanie nazwy użytkownika za pomocą:
+git config user.name "Radosław Osiński";
+---> Nadanie adresu email dla użytkownika:
+git config --global user.email Radoslaw.Osinski@cwsfe.pl
+
 ---> Utworzenie pliku .gitignore z zawartością:
 ##################################################################
 ##################################################################
