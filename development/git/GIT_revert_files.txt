@@ -1,0 +1,3 @@
+Revert commita po złych zmianach:
+
+git revert --no-commit hash_commita..HEAD
