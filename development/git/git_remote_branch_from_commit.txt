@@ -1,0 +1,5 @@
+Zrobienie remote branch od wybranego commit.
+1. Tworzymy przez IDE lokalny branch
+2. Checkoutujemy lokalny branch na wybrany commit a raczej jego hash
+3. git push origin nazwa_lokalnego_branch
+ 
