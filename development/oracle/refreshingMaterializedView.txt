@@ -1,0 +1,3 @@
+BEGIN
+  DBMS_SNAPSHOT.REFRESH('some_materialized_view');
+END;
