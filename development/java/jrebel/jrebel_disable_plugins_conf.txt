@@ -1,0 +1,5 @@
+export JAVA_OPTIONS="-javaagent:/opt/jrebel/jrebel.jar -Drebel.remoting_plugin=false -Drebel.jarsper_plugin=false -Drebel.axis2_plugin=false -Drebel.camel_plugin=false -Drebel.deltaspike_plugin=false -Drebel.click_plugin=false -Drebel.ebean_plugin=false -Drebel.eclipse_plugin=false -Drebel.jruby_plugin=false -Drebel.jersey_plugin=false -Drebel.log4j2_plugin=false -Drebel.mustache_plugin=false -Drebel.prettyfaces_plugin=false -Drebel.restlet_plugin=false -Drebel.seam_wicket_plugin=false -Drebel.spring_data_plugin=false -Drebel.thymeleaf_plugin=false -Drebel.vraptor_plugin=false -Drebel.vaadin_cdiutils_plugin=true -Drebel.webobjects_plugin=true -Drebel.log4j_plugin=false -Drebel.spring_plugin=false -Drebel.log=true -Drebel.log.file=./jrebel.log $JAVA_OPTIONS"
+
+
+
+
