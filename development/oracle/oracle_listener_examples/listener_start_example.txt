@@ -1,0 +1,7 @@
+$ export ORACLE_SID=orcl
+$ sqlplus /nolog
+SQL*Plus: Release 10.2.0.1.0 - Production on Wed Jul 9 11:03:16 2014
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+SQL> connect / as sysdba;
+Connected to an idle instance.
+SQL> startup
