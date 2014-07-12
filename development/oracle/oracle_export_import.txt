@@ -1,0 +1,1 @@
+expdp export_user/export_user_password@//host:1521/orcl_sid full=Y directory=some_dump_dir_declared_in_sql_console dumpfile=dump_full_name.dmp logfile=full_dump.log &dumpfile=dump_file_name2
