@@ -1,0 +1,1 @@
+rsync -rav --include='*.class' --exclude='*.svn' --exclude='*.java' --exclude='*.iml' --exclude='*.war' --exclude='*.ear' --exclude='*.jar' IdeaProjects/project --rsh='ssh -p10222' user@localhost:/opt/jrebel/folder_declared_in_pom
