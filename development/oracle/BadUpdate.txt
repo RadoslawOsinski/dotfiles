@@ -1,0 +1,3 @@
+SELECT * FROM nazwa_tabeli AS OF TIMESTAMP (SYSDATE - 12/24) ;  --listuje zmiany na tabeli z ostatnich 12 godzin
+
+Przydatne jak się zrobi update na tabeli bez "where".
