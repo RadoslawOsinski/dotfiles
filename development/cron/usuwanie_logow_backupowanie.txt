@@ -1,0 +1,4 @@
+bash-4.2$ crontab -l
+3 0 * * * /var/lib/pgsql/backup.sh >/dev/null 2>&1
+4 0 * * * find /var/lib/pgsql/ -iname '*.sql.gz' -mtime +90 -delete;
+

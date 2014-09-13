@@ -1,5 +1,5 @@
 #!/bin/bash
-# to jest skrypt backupujący bazę danych postgres z telewizji 10.0.0.210
+# to jest skrypt backupujący bazę danych postgres
 
 export PG_HOME=/Library/PostgreSQL/8.4
 export PG_BIN=$PG_HOME/bin
