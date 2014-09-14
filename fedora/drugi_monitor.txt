@@ -1,0 +1,2 @@
+#ustawia screen laptopa jako primary a zewnętrzny screen po HDMI ustawia po prawej jako drugi
+[root@rmo rmo]# xrandr --output HDMI-1-2 --right-of LVDS1
