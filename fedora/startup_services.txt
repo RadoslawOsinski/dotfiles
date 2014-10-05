@@ -1,0 +1,6 @@
+systemctl enable httpd.service
+systemctl enable postgresql.service
+systemctl enable wildfly.service
+
+#selinux httpd has been granted permission to connect to IP 127.0.0.1 address and port 8080
+setsebool -P httpd_can_network_connect 1
