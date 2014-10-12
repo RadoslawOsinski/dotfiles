@@ -1,0 +1,11 @@
+Usuwamy pliki:
+domain.xml
+host-master.xml
+
+Pozostawiamy
+host-slave.xml
+
+Nalezy pamiętać o ustawienieniu <host name="..."> w host-slave dla wygody programisty. Oraz o wskazaniu mastera.
+<domain-controller>
+   <remote host="${jboss.domain.master.address}" port="${jboss.domain.master.port:9999}" security-realm="ManagementRealm"/>
+</domain-controller>

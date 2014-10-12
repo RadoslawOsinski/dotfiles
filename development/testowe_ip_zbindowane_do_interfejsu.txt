@@ -1,0 +1,2 @@
+#binduje statycznie IP do interfejsu p5p1. Przydatne przy testowaniu klastrów itp..
+ifconfig p5p1:0 192.168.100.22 netmask 255.255.255.0 up
