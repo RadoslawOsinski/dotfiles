@@ -1,0 +1,5 @@
+#deploy
+$WILDFLY_HOME/bin/jboss-cli.sh --connect --command="deploy --force xxx.war"
+
+#undeploy:
+$WILDFLY_HOME/bin/jboss-cli.sh --connect --command="undeploy xxx.war"
