@@ -1,0 +1,2 @@
+#wylacza kolorowanie
+:syntax off
