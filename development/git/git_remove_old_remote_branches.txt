@@ -1,0 +1,4 @@
+#list remote branches
+git branch -r
+#remove remote branch example
+git branch -rd origin_project/master
