@@ -4,4 +4,8 @@ wyłączenie "auto-indent":
 Aby spowrotem włączyć ten ficzer wpisujemy:
 :set ai
 
+Pozwala kopiować za pomocą myszki
+:set mouse=
 
+Wyłącza kolorowania gdy za duży plik się otworzy
+:set syntax=
