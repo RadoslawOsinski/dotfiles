@@ -1,0 +1,14 @@
+The first step is to get the name of the encrypted partition, with the following command:
+
+blkid | grep crypto
+
+sample output:
+/dev/sda2: UUID="VERY LONG NUMBER" TYPE="crypto_LUKS"
+
+Now we know the name of the partition “/dev/sda2″. The next step is to open the partition and set up a mapping name:
+
+cryptsetup luksOpen /dev/sda2/ crypthome
+
+You have to enter the passphrase to decrypt the partition. Feel free to change the mapping name crypthome to whatever you want. The mapped partition is now available in /dev/mapper/crypthome but it isn’t mounted. The last step is create a mount point and to mount the mapped partition:
+
+mkdir /mnt/crypthome && mount /dev/mapper/crypthome /mnt/crypthome
