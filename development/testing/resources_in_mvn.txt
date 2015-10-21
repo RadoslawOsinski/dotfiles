@@ -1,0 +1,42 @@
+Aby nadpisać zmienne w kontekście spring poprzez settings.xml z maven należy w pom.xml podczas budowania dać "filtrowanie":
+
+<testResources>
+    <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+    </testResource>
+</testResources>
+        
+oraz w springu w kontekście:
+
+<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!--<property name="location" value="classpath:test.properties"/>-->
+        <property name="searchSystemEnvironment" value="true"/>
+    </bean>
+
+    <!--developer powinien miec w pliku settings.xml wpisane odpowiednie dane do polaczenia z baza danych w postaci podobnej do-->
+    <!--<properties>-->
+    <!--<jdbc.connection.url>?</jdbc.connection.url>-->
+    <!--<jdbc.connection.username>?</jdbc.connection.username>-->
+    <!--<jdbc.connection.password>?</jdbc.connection.password>-->
+    <!--</properties>-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+        <property name="url" value="${jdbc.connection.url}"/>
+        <property name="username" value="${jdbc.connection.username}"/>
+        <property name="password" value="${jdbc.connection.password}"/>
+    </bean>
+    
+    Na koniec klasa testu to:
+    @RunWith(SpringJUnit4ClassRunner.class)
+@TransactionConfiguration(defaultRollback = true)
+@ContextConfiguration(locations = {"classpath:kontekst.xml"})
+@IfProfileValue(name = "test-groups", values = {"integration-tests"})
+public class SomeTest extends AbstractTransactionalJUnit4SpringContextTests {
+
+    @Autowired
+    AbcDAO dao;
+
+    @Test
+    public void testMethod() {}
+}
