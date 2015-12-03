@@ -2,3 +2,5 @@ polecenie pozwalające nagrać w formacie wideo zawartość pulpitu do formatu .
 
 recordmydesktop filename
 
+konwersja z ogv do avi:
+mencoder filename.ogv -ovc lavc -oac mp3lame -o filename.avi;
