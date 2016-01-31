@@ -1,0 +1,23 @@
+DEST_USER="jenkins"
+DEST_MACHINE="127.0.0.1"
+DEST_DIR=/opt/tomcat-project-name/webapps
+TOMCAT_BIN_DIR=/opt/tomcat-project-name/bin
+CMD_SUDO='sudo /bin/su - tomcat_user'
+
+############################ tomcat restart #########
+
+ssh -t -t ${DEST_USER}@${DEST_MACHINE} "$CMD_SUDO"  <<eos
+cd ${TOMCAT_BIN_DIR}
+./shutdown.sh
+sleep 200
+
+#kill tomcat if not shut down already
+TOMCAT_BIN_DIR_PID=ps -Awf | grep $TOMCAT_BIN_DIR | grep -v grep | cut -d ' ' -f 1;
+if [ "$TOMCAT_BIN_DIR_PID" -ne "" ]; then
+   kill -9 $TOMCAT_BIN_DIR_PID;
+fi
+
+./startup.sh
+exit
+eos
+exit

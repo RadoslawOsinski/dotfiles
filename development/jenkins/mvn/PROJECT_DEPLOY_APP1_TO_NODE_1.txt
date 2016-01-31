@@ -1,0 +1,79 @@
+export M2_HOME=/opt/jenkins/tools/maven/apache-maven-3.0.4
+export PATH=$M2_HOME/bin:$PATH:$HOME/bin
+
+MAVEN_CONF=/opt/jenkins/.m2/settingsProject.xml
+MAVEN_DIR=/opt/jenkins/.m2/repository
+REPO_URL=http://localhost:8081/artifactory/project
+VERSION=${ArtifactoryBuildId}
+DEST=${DEPLOY_WORKSPACE}/deploy
+DEST_APPLICATION_ARTIFACTORY_XML=$DEST/project.xml
+
+DESTINATION_NODE_USER="jenkins"
+DESTINATION_NODE_MACHINE="127.0.0.2"
+DEST_DIR=/online/project/push
+DEST_PROJECT_DIR=/opt/tomcat8-project/webapps
+DEST_PROJECT=/opt/tomcat8-project
+TOMCAT_PROJECT_BIN=/opt/tomcat8-project/bin
+CMD_SUDO='sudo /bin/su - tomcat_project'
+DATA=`date +"%Y-%m-%d_%H-%M-%S"`
+APPLICATION_NAME_1="project"
+APPLICATION_EXTENSION="war"
+
+PROJECT_ARTIFACTORY_METADATA='$REPO_URL/release/project/maven-metadata.xml'
+
+if [ ! -d ${DEPLOY_WORKSPACE}/deploy ]; then
+   mkdir -p ${DEPLOY_WORKSPACE}/deploy
+fi
+
+wget -q $PROJECT_ARTIFACTORY_METADATA --http-user=${ARTIFACTORY_USER} --http-password=${ARTIFACTORY_PASSWORD} --output-document=$DEST_APPLICATION_ARTIFACTORY_XML
+GROUP_ID=`cat $DEST_APPLICATION_ARTIFACTORY_XML | grep '<groupId>' | sed 's/<groupId>//;s/<\/groupId>//'| tr -d '\t\ '`
+ARTIFACT_ID1=`cat $DEST_APPLICATION_ARTIFACTORY_XML | grep '<artifactId>' | sed 's/<artifactId>//;s/<\/artifactId>//'| tr -d '\t\ '`
+VERSION1=`cat $DEST_APPLICATION_ARTIFACTORY_XML | grep '<latest>' | sed 's/<latest>//;s/<\/latest>//'| tr -d '\t\ '`
+PACKAGE=war
+mvn dependency:get --settings $MAVEN_CONF -DgroupId=${GROUP_ID} -DartifactId=${ARTIFACT_ID1} -Dversion=${VERSION1} -Dpackaging=${PACKAGE} -DrepoUrl=${REPO_URL} -Ddest=${DEPLOY_WORKSPACE}
+scp ${MAVEN_DIR}/${GROUP_ID}/${ARTIFACT_ID1}/${VERSION1}/${ARTIFACT_ID1}-${VERSION1}.${PACKAGE} ${DESTINATION_NODE_USER}@${DESTINATION_NODE_MACHINE}:$DEST_DIR
+
+ssh -t -t ${DESTINATION_NODE_USER}@${DESTINATION_NODE_MACHINE} "$CMD_SUDO" <<eos
+cd ${TOMCAT_PROJECT_BIN}
+./shutdown.sh
+sleep 300
+TOMCAT_PROJECT_BIN_PID=ps -Awf | grep $TOMCAT_PROJECT_BIN | grep -v grep | cut -d ' ' -f 1;
+if [ "$TOMCAT_PROJECT_PID" -ne "" ]; then
+   kill -9 $TOMCAT_PROJECT_BIN_PID;
+fi
+
+########################## deploy project.war ######################
+if [ -f $DEST_PROJECT_DIR/$APPLICATION_NAME_1 ]; then
+   mv -fv $DEST_PROJECT_DIR/${APPLICATION_NAME_1}.${APPLICATION_EXTENSION} $DEST_PROJECT/${APPLICATION_NAME_1}_${DATA}.${APPLICATION_EXTENSION}
+fi
+if [ -f $DEST_PROJECT_DIR/$ARTIFACT_ID1 ]; then
+   mv -fv $DEST_PROJECT_DIR/${ARTIFACT_ID1}.${APPLICATION_EXTENSION} $DEST_PROJECT/${APPLICATION_NAME_1}_${DATA}.${APPLICATION_EXTENSION}
+fi
+if [ -d $DEST_PROJECT_DIR/$APPLICATION_NAME_1 ]; then
+   rm -rf $DEST_PROJECT_DIR/$APPLICATION_NAME_1
+fi
+if [ -f $DEST_PROJECT_DIR/${APPLICATION_NAME_1}.${APPLICATION_EXTENSION} ]; then
+   rm -rf $DEST_PROJECT_DIR/${APPLICATION_NAME_1}.${APPLICATION_EXTENSION}
+fi
+if [ -d $DEST_PROJECT_DIR/$ARTIFACT_ID1 ]; then
+   rm -rf $DEST_PROJECT_DIR/$ARTIFACT_ID1
+fi
+if [ -f $DEST_PROJECT_DIR/${ARTIFACT_ID1}.${APPLICATION_EXTENSION} ]; then
+   rm -rf $DEST_PROJECT_DIR/${ARTIFACT_ID1}.${APPLICATION_EXTENSION}
+fi
+
+
+cp -v $DEST_DIR/${ARTIFACT_ID1}-${VERSION1}.${PACKAGE} $DEST_PROJECT_DIR/${APPLICATION_NAME_1}.${APPLICATION_EXTENSION}
+
+cd TOMCAT_PROJECT_BIN
+./startup.sh
+exit
+eos
+exit
+
+ssh -t -t ${DESTINATION_NODE_USER}@${DESTINATION_NODE_MACHINE} <<EOS
+find $DEST_DIR -maxdepth 1 -type f -name 'project*' -ctime +2 -exec rm -rf {} \;
+exit
+EOS
+exit
+

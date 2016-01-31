@@ -1,0 +1,36 @@
+export M2_HOME=/opt/jenkins/tools/maven/apache-maven-3.0.4
+export PATH=$M2_HOME/bin:$PATH:$HOME/bin
+
+WORK_DIRECTORY=/opt/jenkins/workspace/PROJECT_REINTEGRATE_BRANCH
+M2_CONF=/opt/jenkins/.m2/settingsProject.xml
+M2_DIR=/opt/jenkins/.m2/repository
+VERSION=${PomVersion}
+REPOSITORY_ID=localhostArtifactory
+REPOSITORY_URL=http://localhost:8081/artifactory/project
+LOCAL_DIR=${WORKSPACE}
+GROUP_ID=release
+
+echo "----- Uploading to Artifactory start----";
+
+cd $WORK_DIRECTORY
+MODULES=`cat $WORK_DIRECTORY/pom.xml | grep '<module>' | tr -d '\t\  ' | sed 's/<module>//;s/<\/module>//'| grep -v '<!--'`
+
+for MODULE in $MODULES; do
+    ARTIFACT_ID=`cat $MODULE/pom.xml | grep '<modelVersion>' -A4 | grep '<artifactId>' | tr -d '\t\ ' |sed 's/<\/\?[^>]\+>//g'`
+    NAME=`cat $MODULE/pom.xml | grep '<modelVersion>' -A4 | grep '<name>' | tr -d '\t\ ' | sed 's/<\/\?[^>]\+>//g'`
+    PACKAGE=`cat $MODULE/pom.xml | grep '<modelVersion>' -A4 | grep '<packaging>' | tr -d '\t\ ' |sed 's/<\/\?[^>]\+>//g'`
+
+cd $ARTIFACT_ID
+echo `pwd`
+
+#if [ "$ARTIFACT_ID" == "project" ]; then
+#   mvn deploy:deploy-file --settings $M2_CONF -DgroupId=$GROUP_ID -DartifactId=${ARTIFACT_ID} -Dversion=${BUILD_ID}-${VERSION} -Dpackaging=${PACKAGE} -Dfile=${WORK_DIRECTORY}/${ARTIFACT_ID}/target/${NAME}.${PACKAGE} -DrepositoryId=${REPOSITORY_ID} -Durl=${REPOSITORY_URL}
+#else
+   mvn deploy:deploy-file --settings $M2_CONF -DgroupId=$GROUP_ID -DartifactId=${ARTIFACT_ID} -Dversion=${BUILD_ID}-${VERSION} -Dpackaging=${PACKAGE} -Dfile=${WORK_DIRECTORY}/${ARTIFACT_ID}/target/${ARTIFACT_ID}.${PACKAGE} -DrepositoryId=${REPOSITORY_ID} -Durl=${REPOSITORY_URL}
+#fi
+
+cd ..
+
+done
+
+echo "----- Uploading to Artifactory succed ----"

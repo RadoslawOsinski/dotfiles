@@ -1,0 +1,6 @@
+out.println '------------- Starting parallel restart -------------'
+
+parallel (
+  { build( "JOB_1") },
+  { build( "JOB_2") }
+)

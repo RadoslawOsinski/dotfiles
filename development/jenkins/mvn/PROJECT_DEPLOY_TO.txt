@@ -1,0 +1,9 @@
+out.println '------------- Parallel Deploy to Nodes from Artifactory - latest build -------------'
+
+version = params["ArtifactoryBuildId"]
+
+parallel (
+  { build( "PROJECT_DEPLOY_APP1_TO_NODE_1", ArtifactoryBuildId:  version) },
+  { build( "PROJECT_DEPLOY_APP2_TO_NODE_2", ArtifactoryBuildId:  version) }
+)
+

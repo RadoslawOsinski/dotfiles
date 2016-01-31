@@ -1,0 +1,8 @@
+rm -rf REPOSITORY_MERGING_PROJECT
+mkdir -p REPOSITORY_MERGING_PROJECT
+cd REPOSITORY_MERGING_PROJECT/
+git clone --branch ${DestinationBranch} "${DestinationRepositoryAddress}" target
+cd target
+git remote add DEVELOPMENT_GIT_BRANCH ${SourceRepositoryAddress}
+git pull DEVELOPMENT_GIT_BRANCH ${SourceBranch}
+git push "origin" ${DestinationBranch}:${DestinationBranch}

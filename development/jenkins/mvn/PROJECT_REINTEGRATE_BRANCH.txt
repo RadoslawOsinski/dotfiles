@@ -1,0 +1,7 @@
+- fetch from git clicked in jenkins
+- git merge (optional)
+- mvn clean install -ea -Dspring.profiles.test-groups=integration_tests_local -Dtest-groups=integration_tests_local -Dspring.profiles.active=integration_tests_local,tomcat
+or
+- mvn clean install
+- sonar analysis
+- git push

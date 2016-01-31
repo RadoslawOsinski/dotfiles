@@ -1,0 +1,16 @@
+out.println '------------- Delivering PROJECT -------------'
+
+out.println '------------- Starting Reintegrate Build Test Analyze -------------'
+out.println '------------- Branch to reintegrate: '+ params["BranchToReintegrate"] + ' -------------'
+reintegrateBuild = build( "PROJECT_REINTEGRATE_BRANCH", BranchToReintegrate: params["BranchToReintegrate"])
+buildVersion = reintegrateBuild.environment.get("POM_VERSION")
+
+out.println '------------- Publish to Artifactory version ' + buildVersion
+publishBuild=build("PROJECT_PUBLISH_ON_ARTIFACTORY", PomVersion: buildVersion);
+
+publishIdBuild = publishBuild.environment.get("BUILD_ID");
+artifactoryBuildId = publishIdBuild + '-' + buildVersion
+
+out.println '------------- Starting Deploy to SOME ENVIRONMENT from Artifactory - latest build -------------'
+build( "PROJECT_DEPLOY_TO", ArtifactoryBuildId:  artifactoryBuildId)
+out.println '------------- Deployed to SOME ENVIRONMENT from Artifactory - buildVersion '+ artifactoryBuildId
