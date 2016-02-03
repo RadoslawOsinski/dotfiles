@@ -1,0 +1,13 @@
+drop user test_dev cascade;
+drop TABLESPACE test_dev;
+CREATE TABLESPACE test_dev DATAFILE 'test_dev_01.dbf' SIZE 500M AUTOEXTEND ON MAXSIZE 5000M;
+CREATE USER test_dev identified by test_dev DEFAULT TABLESPACE test_dev QUOTA 5000M ON test_dev;
+GRANT CREATE SESSION TO test_dev;
+GRANT CREATE TABLE TO test_dev;
+GRANT CREATE ANY INDEX TO test_dev;
+GRANT create view TO test_dev;
+GRANT create any trigger TO test_dev;
+GRANT create any procedure TO test_dev;
+GRANT create sequence TO test_dev;
+GRANT create synonym TO test_dev;
+select FILE_NAME,TABLESPACE_NAME,AUTOEXTENSIBLE,INCREMENT_BY from dba_data_files; 
