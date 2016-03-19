@@ -1,0 +1,38 @@
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
+export ORACLE_SID=XE
+export ORACLE_BASE=/u01/app/oracle
+export PATH=$ORACLE_HOME/bin:$PATH
+LSNR=$ORACLE_HOME/bin/lsnrctl
+SQLPLUS=$ORACLE_HOME/bin/sqlplus
+ORACLE_OWNER=oracle
+LOG="$ORACLE_HOME_LISTNER/listener.log"
+
+======================================================================
+bash-4.3$ /u01/app/oracle/product/11.2.0/xe/bin/sqlplus / as sysdba
+SQL*Plus: Release 11.2.0.2.0 Production on Fri Mar 18 19:16:56 2016
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> conn / as sysdba
+Connected.
+SQL> create or replace directory backup_dir as '/u01/app/oracle/oradata'; 
+
+Directory created.
+
+SQL> GRANT READ, WRITE ON DIRECTORY backup_dir to system; 
+
+Grant succeeded.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> exit
+======================================================================
+bash-4.3$ /u01/app/oracle/product/11.2.0/xe/bin/expdp system/system@localhost full=Y directory=BACKUP_DIR dumpfile=oracle_backup.dmp logfile=expdp_oracle_backup.log
+======================================================================
+bash-4.3$ /u01/app/oracle/product/11.2.0/xe/bin/impdp system/system@localhost full=Y directory=BACKUP_DIR dumpfile=oracle_backup.dmp logfile=impdp_oracle_backup.log
