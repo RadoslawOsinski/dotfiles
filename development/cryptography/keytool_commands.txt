@@ -1,0 +1,8 @@
+#generating private key:
+keytool -genkeypair -alias appLocalhost -keyalg RSA -keysize 2048 -dname "CN=*.cwsfe.pl,OU=IT,O=cwsfe,L=Sonsk,ST=Mazowsze,C=PL" -ext SAN=DNS:appLocalhost.cwsfe.pl,DNS:appLocalhost.cwsfe.pl,IP:127.0.0.1 -keystore appKeystore.jks -keypass changeit -storepass changeit -validity 8999
+
+#generate certificate with public key
+keytool -exportcert -keystore appKeystore.jks -storepass changeit -alias applocalhost -file appLocalhost.crt
+
+#import certificate to other keystore
+keytool -importcert -alias appLocalhost -file appLocalhost.crt -trustcacerts -keystore otherKeystore.jks
