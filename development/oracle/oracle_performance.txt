@@ -1,0 +1,34 @@
+Lista sesji
+SELECT s.inst_id,
+ s.sid,
+ s.serial#,
+ p.spid,
+ s.username,
+ s.program,
+ s.osuser, s.machine
+FROM   gv$session s
+ JOIN gv$process p ON p.addr = s.paddr AND p.inst_id = s.inst_id
+WHERE  s.type != 'BACKGROUND';
+
+Zabijanie sesji
+ALTER SYSTEM KILL SESSION 'sid,serial';
+
+Locki na bazie danych:
+select a.session_id,a.oracle_username, a.os_user_name, b.owner "OBJECT OWNER", b.object_name,b.object_type,a.locked_mode from
+  (select object_id, SESSION_ID, ORACLE_USERNAME, OS_USER_NAME, LOCKED_MODE from v$locked_object) a,
+  (select object_id, owner, object_name,object_type from dba_objects) b
+where a.object_id=b.object_id
+
+Inne zapytanie do locków na bazie danych:
+select * from v$lock where block>0;
+
+Lista wykonujących się zapytań
+SELECT   c.sql_text sqltext
+FROM v$session a, v$sqltext c
+WHERE a.sql_address = c.address(+)
+ORDER BY a.status, a.last_call_et, A.SID, A.username, C.piece
+
+Listowanie ostatnich zmian w tabeli
+SELECT * FROM nazwa_tabeli AS OF TIMESTAMP (SYSDATE - 12/24)
+np.
+SELECT * FROM ABC_TABLE  AS OF TIMESTAMP (SYSDATE - 12/24) WHERE PAR_NAME like 'XYZ%jedenjedenjeden%';
