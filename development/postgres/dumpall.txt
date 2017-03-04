@@ -1,0 +1,5 @@
+#dump:
+pg_dumpall > db.out
+
+#reload:
+psql -f db.out postgres

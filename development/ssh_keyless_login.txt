@@ -1,0 +1,26 @@
+[rmo@rmo .ssh]$ ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/rmo/.ssh/id_rsa): atman_cwsfe_id_rsa
+Enter passphrase (empty for no passphrase):
+....
+[rmo@rmo .ssh]$ scp atman_cwsfe_id_rsa.pub root@192.168.3.4:/tmp/
+root@192.168.3.4's password: 
+atman_cwsfe_id_rsa.pub                        100%  395     5.8KB/s   00:00 
+
+
+[root@centos .ssh]# cat atman_cwsfe_id_rsa.pub >> ~/.ssh/authorized_keys
+[root@centos .ssh]# service sshd reload
+[root@centos .ssh]# vi /etc/ssh/sshd_config
+
+PubkeyAuthentication yes
+AuthorizedKeyFile  .ssh/authorized_keys
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+
+[root@centos .ssh]# service sshd reload
+
+
+[rmo@rmo ~]$ ssh -i ~/.ssh/atman_cwsfe_id_rsa root@192.168.3.4 
+Last login: ....
+
+
