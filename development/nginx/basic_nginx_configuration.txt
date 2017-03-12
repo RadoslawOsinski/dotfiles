@@ -1,0 +1,38 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
+    return 301 https://$host$request_uri;
+}
+
+server {
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+  ssl_certificate /opt/.../signedCert.crt;
+  ssl_certificate_key /opt//privateKey.pem;
+  server_name     example.com localhost;
+
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:SSL:50m;
+  ssl_session_tickets off;
+
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_trusted_certificate /opt/.../trustedCertsBundle.crt;
+
+  root /opt/.../;
+
+  location / {
+	proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_pass http://127.0.0.1:8080/someContainerContext/;
+	rewrite ^/someContainerContext/(.*)$ /$1 last;
+  }
+
+  location /someContainerContext {
+  	rewrite ^/someContainerContext(.*)$ $1 redirect;
+  }
+
+}
