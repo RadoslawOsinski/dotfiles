@@ -1,0 +1,8 @@
+Export from keytool's proprietary format (called "JKS") to standardized format PKCS #12:
+keytool -importkeystore -srckeystore keystore.jks -destkeystore keystore.p12 -deststoretype PKCS12 -srcalias <jkskeyalias> -deststorepass <password> -destkeypass <password>
+
+Export certificate using openssl:
+openssl pkcs12 -in keystore.p12  -nokeys -out cert.pem
+
+Export unencrypted private key:
+openssl pkcs12 -in keystore.p12  -nodes -nocerts -out key.pem
