@@ -1,0 +1,6 @@
+3 0 * * * /usr/bin/pg_dumpall --file /opt/postgres_backup-`date +%Y%m%d-%H%M`.sql --username=postgres
+4 0 * * * find /opt/ -iname 'postgres_backup*.sql' -mtime +180 -delete;
+4 0 * * * find /opt/tomcat/logs -iname '*.log.gz' -mtime +180 -delete;
+4 0 * * * find /opt/tomcat/logs -iname '*.log' -mtime +180 -delete;
+5 0 * * * find /var/log/* -iname '*.log' -mtime +180 -delete;
+5 0 * * * find /var/log/* -iname '*.gz' -mtime +180 -delete;
