@@ -1,3 +1,4 @@
+###################################################Stary Tomcat######
 #wywalenie logowania do konsoli
 logging.properties
 .handlers=1catalina.org.apache.juli.FileHandler
@@ -6,5 +7,24 @@ logging.properties
 #rolowanie logów
 1catalina.java.util.logging.FileHandler.pattern=${catalina.base}/logs/catalina.%g.log
 1catalina.java.util.logging.FileHandler.limit=20000000
-1catalina.java.util.logging.FileHandler.count=5
+1catalina.java.util.logging.FileHandler.count=50
 
+###################################################Nowy Tomcat#######
+#wywalenie logowania do konsoli
+.handlers = 1catalina.org.apache.juli.AsyncFileHandler, java.util.logging.ConsoleHandler
+na rzecz
+.handlers = 1catalina.org.apache.juli.AsyncFileHandler
+
+#Wyrzucić
+java.util.logging.ConsoleHandler.level = FINE
+java.util.logging.ConsoleHandler.formatter = org.apache.juli.OneLineFormatter
+
+oraz włączyć rolowanie logów obok wpisów:
+1catalina.org.apache.juli.AsyncFileHandler.level = FINE
+1catalina.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+1catalina.org.apache.juli.AsyncFileHandler.prefix = catalina.
+
+dodać:
+1catalina.org.apache.juli.AsyncFileHandler.pattern=${catalina.base}/logs/catalina.%g.log
+1catalina.org.apache.juli.AsyncFileHandler.limit=20000000
+1catalina.org.apache.juli.AsyncFileHandler.count=50
