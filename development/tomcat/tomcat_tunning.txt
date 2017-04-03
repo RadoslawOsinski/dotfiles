@@ -1,0 +1,10 @@
+#wywalenie logowania do konsoli
+logging.properties
+.handlers=1catalina.org.apache.juli.FileHandler
+	java.util.logging.ConsoleHandler (WYWALIĆ!)
+
+#rolowanie logów
+1catalina.java.util.logging.FileHandler.pattern=${catalina.base}/logs/catalina.%g.log
+1catalina.java.util.logging.FileHandler.limit=20000000
+1catalina.java.util.logging.FileHandler.count=5
+
