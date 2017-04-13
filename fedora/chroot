@@ -1,0 +1,11 @@
+root #mount -t proc /proc /mnt/gentoo/proc
+root #mount --rbind /sys /mnt/gentoo/sys
+root #mount --make-rslave /mnt/gentoo/sys
+root #mount --rbind /dev /mnt/gentoo/dev
+root #mount --make-rslave /mnt/gentoo/dev
+root #rm /dev/shm && mkdir /dev/shm
+root #mount -t tmpfs -o nosuid,nodev,noexec shm /dev/shm
+root # chmod 1777 /dev/shm
+root #chroot /mnt/gentoo /bin/bash
+root #source /etc/profile
+root #export PS1="(chroot) $PS1"
