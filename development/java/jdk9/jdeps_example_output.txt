@@ -1,0 +1,118 @@
+/bin/bash /home/rmo/IdeaProjects/cwsfe_cms/cwsfe_cms_repository/jdeps_simpleModel.sh
+current dir: /home/rmo/IdeaProjects/cwsfe_cms/cwsfe_cms_repository
+
+
+compiling
+
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.6/9d28a6b23650e8a7e9063c04588ace6cf7012c17/commons-lang3-3.6.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.flywaydb/flyway-core/4.2.0/1cbe078e49e81ef13b5eafd54552feac0a55c19e/flyway-core-4.2.0.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/com.hazelcast/hazelcast/3.8.2/183011482deb1d7fb4de5da9d7935cfb5a4c3184/hazelcast-3.8.2.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.2.10.Final/b46a4ba34b52d335cc45c0f33d029f782f7db887/hibernate-core-5.2.10.Final.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar
+classes -> java.base
+classes -> java.naming
+classes -> java.sql
+classes -> java.xml.ws.annotation
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/da76ca59f6a57ee3102f8f9bd9cee742973efa8a/slf4j-api-1.7.25.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/5.0.0.M5/eb3e70c22f71df6428e8b347d203d7d7be4df750/spring-beans-5.0.0.M5.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/5.0.0.M5/b231685a5eebf5aff487cb08ad4e7e5fd1667193/spring-context-5.0.0.M5.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.0.0.M5/8e807781d3ddcc9443e2f75387eb0cb2d14bd3d3/spring-core-5.0.0.M5.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/5.0.0.M5/895e229d03177a42eb51ec80332d160562fc3cf2/spring-jdbc-5.0.0.M5.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/5.0.0.M5/c98f49aaac21eeeb4ca8b62a1085df747542bf20/spring-orm-5.0.0.M5.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/5.0.0.M5/c38abe13f307ccf1e1ba1fb23179bcbdc9bb90b5/spring-tx-5.0.0.M5.jar
+classes -> /home/rmo/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/5.0.0.M5/ffeea21f3b1edfa2471c796edd43de666080800a/spring-web-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.author                         -> eu.com.cwsfe.cms.db.common                         classes
+   eu.com.cwsfe.cms.db.author                         -> java.io                                            java.base
+   eu.com.cwsfe.cms.db.author                         -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.author                         -> java.lang.invoke                                   java.base
+   eu.com.cwsfe.cms.db.author                         -> java.util                                          java.base
+   eu.com.cwsfe.cms.db.author                         -> javax.persistence                                  hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.author                         -> javax.persistence.criteria                         hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.author                         -> org.apache.commons.lang3.builder                   commons-lang3-3.6.jar
+   eu.com.cwsfe.cms.db.author                         -> org.hibernate                                      hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.author                         -> org.hibernate.annotations                          hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.author                         -> org.hibernate.query                                hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.author                         -> org.springframework.stereotype                     spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.common                         -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.common                         -> java.time                                          java.base
+   eu.com.cwsfe.cms.db.common                         -> org.springframework.web.multipart                  spring-web-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> com.hazelcast.core                                 hazelcast-3.8.2.jar
+   eu.com.cwsfe.cms.db.configuration                  -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.configuration                  -> java.util                                          java.base
+   eu.com.cwsfe.cms.db.configuration                  -> javax.naming                                       java.naming
+   eu.com.cwsfe.cms.db.configuration                  -> javax.sql                                          java.sql
+   eu.com.cwsfe.cms.db.configuration                  -> org.hibernate                                      hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.hibernate.boot                                 hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.hibernate.stat                                 hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.slf4j                                          slf4j-api-1.7.25.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.beans.factory.annotation       spring-beans-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.beans.factory.config           spring-beans-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.context.annotation             spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.core.env                       spring-core-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.jdbc.datasource                spring-jdbc-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.jmx.export                     spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.jmx.support                    spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.jndi                           spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.orm.hibernate5                 spring-orm-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.transaction                    spring-tx-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.configuration                  -> org.springframework.transaction.annotation         spring-tx-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.i18n                           -> java.io                                            java.base
+   eu.com.cwsfe.cms.db.i18n                           -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.i18n                           -> java.lang.invoke                                   java.base
+   eu.com.cwsfe.cms.db.i18n                           -> java.util                                          java.base
+   eu.com.cwsfe.cms.db.i18n                           -> javax.persistence                                  hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.i18n                           -> org.apache.commons.lang3.builder                   commons-lang3-3.6.jar
+   eu.com.cwsfe.cms.db.i18n                           -> org.hibernate                                      hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.i18n                           -> org.hibernate.annotations                          hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.i18n                           -> org.hibernate.query                                hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.i18n                           -> org.springframework.stereotype                     spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.keystores                      -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.keystores                      -> java.util                                          java.base
+   eu.com.cwsfe.cms.db.keystores                      -> javax.persistence                                  hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.keystores                      -> org.apache.commons.lang3.builder                   commons-lang3-3.6.jar
+   eu.com.cwsfe.cms.db.keystores                      -> org.hibernate                                      hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.keystores                      -> org.hibernate.annotations                          hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.keystores                      -> org.hibernate.query                                hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.keystores                      -> org.springframework.stereotype                     spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.news                           -> eu.com.cwsfe.cms.db.author                         classes
+   eu.com.cwsfe.cms.db.news                           -> eu.com.cwsfe.cms.db.common                         classes
+   eu.com.cwsfe.cms.db.news                           -> java.io                                            java.base
+   eu.com.cwsfe.cms.db.news                           -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.news                           -> java.lang.invoke                                   java.base
+   eu.com.cwsfe.cms.db.news                           -> java.time                                          java.base
+   eu.com.cwsfe.cms.db.news                           -> java.util                                          java.base
+   eu.com.cwsfe.cms.db.news                           -> javax.persistence                                  hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.news                           -> javax.persistence.criteria                         hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.news                           -> org.apache.commons.lang3.builder                   commons-lang3-3.6.jar
+   eu.com.cwsfe.cms.db.news                           -> org.hibernate                                      hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.news                           -> org.hibernate.annotations                          hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.news                           -> org.hibernate.query                                hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.news                           -> org.springframework.stereotype                     spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.parameters                     -> java.io                                            java.base
+   eu.com.cwsfe.cms.db.parameters                     -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.parameters                     -> java.lang.invoke                                   java.base
+   eu.com.cwsfe.cms.db.parameters                     -> java.util                                          java.base
+   eu.com.cwsfe.cms.db.parameters                     -> javax.persistence                                  hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.parameters                     -> javax.persistence.criteria                         hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.parameters                     -> org.apache.commons.lang3.builder                   commons-lang3-3.6.jar
+   eu.com.cwsfe.cms.db.parameters                     -> org.hibernate                                      hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.parameters                     -> org.hibernate.annotations                          hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.parameters                     -> org.hibernate.query                                hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.parameters                     -> org.springframework.stereotype                     spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.users                          -> java.io                                            java.base
+   eu.com.cwsfe.cms.db.users                          -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.users                          -> java.lang.invoke                                   java.base
+   eu.com.cwsfe.cms.db.users                          -> java.util                                          java.base
+   eu.com.cwsfe.cms.db.users                          -> javax.persistence                                  hibernate-jpa-2.1-api-1.0.0.Final.jar
+   eu.com.cwsfe.cms.db.users                          -> org.apache.commons.lang3.builder                   commons-lang3-3.6.jar
+   eu.com.cwsfe.cms.db.users                          -> org.hibernate                                      hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.users                          -> org.hibernate.annotations                          hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.users                          -> org.hibernate.query                                hibernate-core-5.2.10.Final.jar
+   eu.com.cwsfe.cms.db.users                          -> org.springframework.stereotype                     spring-context-5.0.0.M5.jar
+   eu.com.cwsfe.cms.db.version                        -> java.lang                                          java.base
+   eu.com.cwsfe.cms.db.version                        -> javax.annotation                                   java.xml.ws.annotation
+   eu.com.cwsfe.cms.db.version                        -> javax.sql                                          java.sql
+   eu.com.cwsfe.cms.db.version                        -> org.flywaydb.core                                  flyway-core-4.2.0.jar
+   eu.com.cwsfe.cms.db.version                        -> org.springframework.stereotype                     spring-context-5.0.0.M5.jar
+
+Process finished with exit code 0
