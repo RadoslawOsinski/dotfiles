@@ -1,0 +1,11 @@
+....
+<profile>
+    <id>jdk-paths</id>
+    <activation>
+        <activeByDefault>true</activeByDefault>
+    </activation>
+    <properties>
+        <JDK_9_HOME>/usr/java/jdk-9</JDK_9_HOME>
+        <JDK_10_HOME>/usr/java/jdk-10</JDK_10_HOME>
+    </properties>
+</profile>

@@ -1,0 +1,55 @@
+allprojects {
+    buildscript {
+        repositories {
+            mavenLocal()
+            maven {
+                url "http://host:8080/artifactory/libs-release"
+            }
+            maven {
+                url "http://host:8080/artifactory/libs-snapshot"
+            }
+            mavenCentral()
+            maven {
+                url "https://mvnrepository.com/repos/springio-milestone"
+            }
+            maven {
+                url "https://repo.spring.io/libs-snapshot"
+            }
+            maven {
+                url "https://oss.sonatype.org/content/repositories/snapshots/"
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://host:8080/artifactory/libs-release"
+        }
+        maven {
+            url "http://host:8080/artifactory/libs-snapshot"
+        }
+        mavenCentral()
+        maven {
+            url "https://mvnrepository.com/repos/springio-milestone"
+        }
+        maven {
+            url "https://repo.spring.io/libs-snapshot"
+        }
+    }
+
+    apply plugin: 'maven-publish'
+    def artifactRepoBase = 'http://host:8080/artifactory'
+
+    publishing {
+        repositories {
+            mavenLocal()
+            maven {
+                credentials {
+                    username "userExample"
+                    password "userPasswordExample"
+                }
+                url "${artifactRepoBase}/libs-${project.version.endsWith('-SNAPSHOT') ? 'snapshot' : 'release' }-local"
+            }
+        }
+    }
+}
