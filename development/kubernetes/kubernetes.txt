@@ -1,0 +1,12 @@
+#export yaml'a for deployment
+kubectl get deploy deploymentname -o yaml --export
+
+#import yaml'a for deployment
+
+#moving docker images from localhost to minicube localhost:
+docker save imageNameGoesHere | pv | (eval $(minikube docker-env) && docker load)
+
+
+#local deployment from docker-compose:
+imagePullPolicy: Always
+imagePullPolicy: Never
