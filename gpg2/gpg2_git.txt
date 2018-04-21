@@ -1,0 +1,26 @@
+Associating your GPG key with Git
+
+After you have created your GPG key and added it to your account, it's time to tell Git which key to use.
+Use the following command to list the private GPG key you just created:
+
+gpg2 --list-secret-keys --keyid-format LONG mr@robot.sh
+Replace mr@robot.sh with the email address you entered above.
+
+
+Copy the GPG key ID that starts with sec. In the following example, that's
+30F2B65B9246B6CA:
+
+sec   rsa4096/30F2B65B9246B6CA 2017-08-18 [SC]
+      D5E4F29F3275DC0CDA8FFC8730F2B65B9246B6CA
+uid                   [ultimate] Mr. Robot <mr@robot.sh>
+ssb   rsa4096/B7ABC0813E4028C0 2017-08-18 [E]
+
+
+Tell Git to use that key to sign the commits:
+
+git config --global user.signingkey 30F2B65B9246B6CA
+Replace 30F2B65B9246B6CA with your GPG key ID.
+
+
+
+
