@@ -1,0 +1,2 @@
+E.g:
+jdeps /home/rmo/.gradle/caches/modules-2/files-2.1/com.google.cloud/google-cloud-pubsub/0.47.0-beta/251b093e7372e99bdaa83db0dbf9be2b352aa7a1/google-cloud-pubsub-0.47.0-beta.jar
