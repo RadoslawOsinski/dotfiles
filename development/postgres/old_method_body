@@ -1,0 +1,2 @@
+--prints old function body on postgres 8:
+SELECT prosrc FROM pg_proc WHERE proname = 'function_name';
