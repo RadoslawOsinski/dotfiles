@@ -1,0 +1,5 @@
+#import pliku key i cert do keystore PKCS12
+openssl pkcs12 -export -in server.crt -inkey server.key -out server.p12 -name keyalias -CAfile ca.crt -caname root
+
+#zmiana formatu z PKCS12 do JKS
+keytool -importkeystore -deststorepass changeit -destkeypass changeit -destkeystore server.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcstorepass changeit -alias keyalias
