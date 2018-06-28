@@ -1,0 +1,6 @@
+[root@rmo ~]$ dnf install brscan4-0.4.5-1.x86_64.rpm brscan-skey-0.2.4-1.x86_64.rpm
+[rmo@rmo ~]$ brsaneconfig4 -a name="MFC-7860DW" model="MFC-7860DW" ip=192.168.8.107
+
+[rmo@rmo ~]$ scanimage -L
+device `brother4:net1;dev0' is a Brother MFC-7860DW MFC-7860DW
+device `v4l:/dev/video0' is a Noname Chicony USB 2.0 Camera: Chicony virtual device
