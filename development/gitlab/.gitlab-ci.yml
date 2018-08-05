@@ -64,5 +64,6 @@ release:
     - gcloud container clusters get-credentials projectk8s --zone europe-west3-a --project pro-tracker-some-id
     - kubectl apply -f $CI_PROJECT_DIR/src/kubernetes/conf/
   only:
-    - master
+  - tags
+#  - master
   when: manual
