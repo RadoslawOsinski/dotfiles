@@ -1,0 +1,13 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'gradlejdk10', '-f', 'src/cloud-builders/gradlejdk10/Dockerfile', '.']
+- name: gcr.io/cloud-builders/git
+  args: ['clone', 'https://source.developers.google.com/p/$PROJECT_ID/r/ProjectName']
+  env: ['PROJECT_ROOT=SomeProjectName']
+- name: gradlejdk10
+  args: ['build']
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/project-name/project-name-website:$TAG_NAME', '-f', 'project_website/src/docker/Dockerfile', 'project_website']
+images: [
+    'gcr.io/$PROJECT_ID/project-name/project-name-website:$TAG_NAME'
+]
