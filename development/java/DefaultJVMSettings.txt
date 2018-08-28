@@ -1,0 +1,3 @@
+Default JVM settings for JDK:
+
+java -XX:+PrintFlagsFinal
