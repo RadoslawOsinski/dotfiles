@@ -1,0 +1,5 @@
+https://www.qr-online.pl/index.php#qr_text_tbut
+generates qrcode for bank transfer by scanning qrcode. QRCode should contain text similar to:
+|PL|31...bank.number..69|00001234|Receiver name|transfer text|||
+
+Where 00001234 is a number of cash equal to: 12,34 zł.
