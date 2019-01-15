@@ -1,0 +1,5 @@
+Problem:
+ERROR: language "plpgsql" does not exist
+
+In bash execute:
+createlang -d database_name plpgsql
