@@ -1,0 +1,16 @@
+#import do bazy danych mozna zrobic przez polecenie podobne do:
+#psql -p 5432 -h localhost -U admin -W admin -d dbname -f dbname.sql
+postgresql-dbname:
+  container_name: postgresql-dbname
+  restart: 'no'
+  image: nahuel/postgresql-8.4
+  ports:
+  - "5432:5432"
+  #execute to add plpgsql in terminal: createlang -h localhost -p 16433 -U admin --dbname=dbname plpgsql
+  environment:
+  - POSTGRESQL_USER=admin
+  - POSTGRESQL_PASS=admin
+  - POSTGRESQL_DB=dbname
+  - DB_EXTENSION=pg_trgm
+  volumes:
+  - ${DB_NAME_POSTGRESQL_STORE}/postgresql:/var/lib/postgresql
