@@ -1,0 +1,3 @@
+mvn liquibase:rollbackSQL -Dliquibase.rollbackCount=1
+or
+liquibase:rollback -Dliquibase.rollbackCount=1
