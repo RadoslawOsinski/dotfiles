@@ -1,0 +1,11 @@
+Fix encoding from query results:
+
+	select R.oid::bigint as role_id, rolname as role_name,
+			rolsuper is_super, rolinherit is_inherit,
+			rolcreaterole can_createrole, rolcreatedb can_createdb,
+			rolcanlogin can_login, rolreplication /* false */ is_replication,
+			rolconnlimit conn_limit, rolvaliduntil valid_until,
+			rolbypassrls /* false */ bypass_rls, rolconfig config,
+			D.description
+			from pg_catalog.pg_roles R
+			left join pg_catalog.pg_shdescription D on D.objoid = R.oid
