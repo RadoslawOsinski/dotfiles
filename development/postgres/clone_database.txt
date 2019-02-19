@@ -1,0 +1,6 @@
+--kills sessions
+SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity
+WHERE pg_stat_activity.datname = 'database_name' AND pid <> pg_backend_pid();
+
+--fast database clone made on server
+CREATE DATABASE database_name_20191231_test WITH ENCODING='UTF8' TEMPLATE=database_name CONNECTION LIMIT=-1;
