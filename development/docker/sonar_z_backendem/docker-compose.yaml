@@ -1,0 +1,37 @@
+version: '3.1'
+services:
+  postgresql_11:
+    build: postgres
+    image: postgres
+    restart: 'no'
+    ports:
+    - "5432:5432"
+    networks:
+    - sonarnet
+    environment:
+    - POSTGRES_PASSWORD=admin
+    - POSTGRES_USER=admin
+    - POSTGRES_DB=sonar
+    volumes:
+    - ${POSTGRESQL_STORE}:/var/lib/postgresql
+    - ${POSTGRESQL_STORE}/data:/var/lib/postgresql/data
+  sonar_77:
+    build: sonar
+    image: sonar
+    ports:
+    - "9000:9000"
+    - "9001:9001"
+    networks:
+    - sonarnet
+    environment:
+    - SONARQUBE_JDBC_USERNAME=admin
+    - SONARQUBE_JDBC_PASSWORD=admin
+    - SONARQUBE_JDBC_URL=jdbc:postgresql://postgresql_11:5432/sonar
+    - SONARQUBE_WEB_JVM_OPTS=-Xmx2048m
+    volumes:
+      - ${SONAR_STORE}/data:/opt/sonarqube/data
+    #extensions are added to image during its creation. Do not override.
+#      - ${SONAR_STORE}/extensions:/opt/sonarqube/extensions
+networks:
+  sonarnet:
+    driver: bridge
