@@ -1,0 +1,3 @@
+#mount encrypted file system
+#tar xzvpf /mnt/customBackup.tar.gz -C /mnt/customBackupUnpacked/
+#unmount encrypted file system
