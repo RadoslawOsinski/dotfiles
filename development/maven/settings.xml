@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <localRepository>/home/radek/.m2/repository/</localRepository>
+    <pluginGroups>
+        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+    </pluginGroups>
+
+    <proxies>
+    </proxies>
+
+    <servers>
+        <server>
+            <id>central</id>
+        </server>
+        <server>
+            <id>snapshots</id>
+        </server>
+        <server>
+            <id>ssh-repository</id>
+            <username>...</username>
+            <password>...</password>
+        </server>
+        <server>
+            <id>artifactory-local</id>
+            <username>...</username>
+            <password>...</password>
+        </server>
+    </servers>
+
+    <mirrors>
+    </mirrors>
+
+    <profiles>
+        <profile>
+            <repositories>
+                <!--                <repository>-->
+                <!--                    <id>jcenter</id>-->
+                <!--                    <url>https://jcenter.bintray.com/</url>-->
+                <!--                    <snapshots>-->
+                <!--                        <enabled>false</enabled>-->
+                <!--                    </snapshots>-->
+                <!--                    <releases>-->
+                <!--                        <enabled>true</enabled>-->
+                <!--                    </releases>-->
+                <!--                </repository>-->
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <id>central</id>
+                    <name>libs-release</name>
+                    <url>https://nexus.client.com.pl/repository/libs-release</url>
+                </repository>
+                <repository>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <id>snapshots</id>
+                    <name>libs-snapshot</name>
+                    <url>https://nexus.client.com.pl/repository/libs-snapshot</url>
+                </repository>
+                <!--                <repository>-->
+                <!--                    <snapshots>-->
+                <!--                        <enabled>false</enabled>-->
+                <!--                    </snapshots>-->
+                <!--                    <id>springio-milestone</id>-->
+                <!--                    <name>springio-milestone</name>-->
+                <!--                    <url>https://mvnrepository.com/repos/springio-milestone</url>-->
+                <!--                </repository>-->
+            </repositories>
+            <pluginRepositories>
+                <!--                <pluginRepository>-->
+                <!--                    <id>jcenter</id>-->
+                <!--                    <url>https://jcenter.bintray.com/</url>-->
+                <!--                    <snapshots>-->
+                <!--                        <enabled>false</enabled>-->
+                <!--                    </snapshots>-->
+                <!--                    <releases>-->
+                <!--                        <enabled>true</enabled>-->
+                <!--                    </releases>-->
+                <!--                </pluginRepository>-->
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <id>central</id>
+                    <name>libs-release</name>
+                    <url>https://nexus.client.com.pl/repository/libs-release</url>
+                </pluginRepository>
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <id>snapshots</id>
+                    <name>libs-snapshot</name>
+                    <url>https://nexus.client.com.pl/repository/libs-snapshot</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <id>client-artifactory</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>jdk-paths</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <JDK_6_HOME>/home/radek/BinaryPrograms/jdk1.6.0_45</JDK_6_HOME>
+                <JDK_7_HOME>/home/radek/BinaryPrograms/jdk1.7.0_80</JDK_7_HOME>
+                <JDK_8_HOME>/usr/java/jdk1.8.0_191-amd64</JDK_8_HOME>
+                <JDK_11_HOME>/usr/java/latest</JDK_11_HOME>
+            </properties>
+        </profile>
+        <profile>
+            <id>downloadSources</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <downloadSources>true</downloadSources>
+                <downloadJavadocs>true</downloadJavadocs>
+            </properties>
+        </profile>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>
+                    http://localhost:9000
+                </sonar.host.url>
+            </properties>
+        </profile>
+    </profiles>
+</settings>
