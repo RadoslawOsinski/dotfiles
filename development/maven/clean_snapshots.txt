@@ -1,0 +1,1 @@
+find $HOME/.m2/repository/ -name "*-SNAPSHOT" -type d -mtime +60 -print -prune -exec rm -r "{}" \;
