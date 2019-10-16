@@ -9,3 +9,8 @@ Fix encoding from query results:
 			D.description
 			from pg_catalog.pg_roles R
 			left join pg_catalog.pg_shdescription D on D.objoid = R.oid
+
+
+update pg_catalog.pg_authid set rolname = 'unknown' where oid = 19322;
+
+update pg_catalog.pg_shdescription set description = null where objoid in (28525, 28527, 28528, 28529);
