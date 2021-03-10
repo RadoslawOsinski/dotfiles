@@ -1,0 +1,7 @@
+firewalld:
+
+$ firewall-cmd --permanent --zone=trusted --add-source=0.0.0.0/0
+success
+$ firewall-cmd --permanent --zone=trusted --add-port=5432/tcp
+success
+$ firewall-cmd --reload
