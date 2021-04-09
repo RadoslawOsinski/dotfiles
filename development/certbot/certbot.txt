@@ -1,0 +1,20 @@
+yum install certbot-haproxy
+yum install certbot
+touch /usr/local/etc/.../app.cwsfe.pl/cert_and_key.pem
+vim /usr/local/etc/.../app.cwsfe.pl/cert_and_key.pem
+vim /usr/local/etc/.../app.cwsfe.pl/cert_and_key.pem
+certbot certonly --standalone -d app.cwsfe.pl --non-interactive --agree-tos --email Radoslaw.Osinski@cwsfe.pl --http-01-port=8888
+
+[root@haproxy live]# crontab -l
+0 0 1 * * root bash /opt/update-certs.sh
+
+
+[root@haproxy live]# cat /opt/update-certs.sh
+#!/usr/bin/env bash
+# Renew the certificate
+certbot renew --force-renewal --tls-sni-01-port=8888
+# Concatenate new cert files, with less output (avoiding the use tee and its output to stdout)
+bash -c "cat /etc/letsencrypt/live/app.cwsfe.pl/fullchain.pem /etc/letsencrypt/live/app.cwsfe.pl/privkey.pem > /etc/letsencrypt/live/app.cwsfe.pl/app.cwsfe.pl.pem"
+
+# Reload  HAProxy
+service haproxy reload
