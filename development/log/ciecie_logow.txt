@@ -1,0 +1,14 @@
+Grepowanie linii początku testu wydajnościowego:
+$ cat plik.log | grep -n "traceId=9420948ec922427"
+14568741
+
+Grepowanie linii końca testu wydajnościowego:
+$ cat plik.log | grep -n "2021-08-04 19:00"
+23286785
+
+Liczba linii pomiędzy wcześniej znalezionymi liniami:
+$ echo $((23286785-14568741))
+8718044
+
+Wycinanie z dziesiątek gigabajtów logów interesującego fragmentu pomiędzy liniami:
+tail -n+14568741 plik.log | head -n8718044 > /tmp/przyciete_logi.log
