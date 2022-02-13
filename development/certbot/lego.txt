@@ -1,0 +1,5 @@
+Expired certificate renowal:
+/opt/bitnami/letsencrypt/lego --dns manual --email="user@email.com" --domains="subdomain.domain.pl" --path="/opt/bitnami/letsencrypt" run
+
+Normal TLS renowal:
+/opt/bitnami/letsencrypt/lego --tls --email="user@email.com" --domains="subdomain.domain.pl" --path="/opt/bitnami/letsencrypt" renew --days 90
