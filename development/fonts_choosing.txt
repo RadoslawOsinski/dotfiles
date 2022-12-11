@@ -1,4 +1,4 @@
-Garamond - serif, looks clasic, smart
+Garamond - serif, looks classic, smart
 Bodoni - serif, looks premium, elegant
 Century Expanded - serif, very readable
 Futura - sans-serif geometric, versatile, functional
