@@ -1,0 +1,1 @@
+dd bs=4M if=Fedora-Server-dvd-x86_64-38-1.6.iso of=/dev/sdb status=progress oflag=sync
