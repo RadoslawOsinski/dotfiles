@@ -1,0 +1,22 @@
+#show interfaces
+[rosinski@cwsfek8snode1 ~]$ nmcli con
+NAME     UUID                                  TYPE      DEVICE
+enp0s25  fad83f00-bc72-3400-9f94-90d7ca15c647  ethernet  enp0s25
+
+#show current interface configuration
+[rosinski@cwsfek8snode1 ~]$ nmcli con show enp0s25
+connection.id:                          enp0s25
+...
+GENERAL.NAME:                           enp0s25
+GENERAL.DEVICES:                        enp0s25
+GENERAL.IP-IFACE:                       enp0s25
+GENERAL.STATE:                          aktywowano
+...
+IP4.ADDRESS[1]:                         192.168.88.246/24
+IP4.GATEWAY:                            192.168.88.1
+IP4.ROUTE[1]:                           dst = 192.168.88.0/24, nh = 0.0.0.0, mt = 100
+IP4.ROUTE[2]:                           dst = 0.0.0.0/0, nh = 192.168.88.1, mt = 100
+IP4.DNS[1]:                             192.168.88.1
+...
+DHCP4.OPTION[24]:                       routers = 192.168.88.1
+DHCP4.OPTION[25]:                       subnet_mask = 255.255.255.0

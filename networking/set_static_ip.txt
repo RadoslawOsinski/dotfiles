@@ -1,0 +1,6 @@
+#ustawia statyczne połączenie na interfejsie enp0s25 o IP 192.168.88.250 z gateway i dns 192.168.88.1
+nmcli con mod enp0s25 ipv4.addresses 192.168.88.250/24
+nmcli con mod enp0s25 ipv4.gateway 192.168.88.1
+nmcli con mod enp0s25 ipv4.dns 192.168.88.1
+nmcli con mod enp0s25 ipv4.method manual
+nmcli con up enp0s25
