@@ -1,0 +1,19 @@
+Upgrade postges servera z niedostępnością (draft robiony z palucha):
+
+#Lista nowych wersji:
+dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/F-39-x86_64/pgdg-fedora-repo-latest.noarch.rpm
+
+#Upgrade paczek serwera:
+dnf install -y postgresql16-server
+
+#zmiana usera na postgres:
+su postgres
+
+#dump istniejących danych
+/usr/pgsql-16/bin/pg_dumpall > dumpall_16.sql
+
+#inicjalizacja nowej bazy danych
+/usr/pgsql-16/bin/postgresql-16-setup initdb
+
+#wczytanie dumpu
+psql -U postgres -f dumpall_16.sql
