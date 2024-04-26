@@ -1,0 +1,10 @@
+sudo smartctl --device nvme --attributes --health /dev/nvme0
+
+https://www.cyberciti.biz/tips/linux-find-out-if-harddisk-failing.html
+
+We want to avoid:
+  5 Reallocated_Sector_Ct   0x0033   100   100   036    Pre-fail  Always       -     
+197 Current_Pending_Sector  0x0012   100   100   000    Old_age   Always       -       49
+# 1  Extended offline    Completed: read failure       90%      4789         1746972641
+
+sudo smartctl --device nvme --attributes --test=short --log=selftest /dev/nvme0
