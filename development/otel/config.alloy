@@ -1,0 +1,54 @@
+logging {
+  level = "info"
+  write_to = [loki.write.localhost_loki.receiver]
+}
+
+loki.write "localhost_loki" {
+  endpoint {
+    url = "http://localhost:3100/loki/api/v1/push"
+  }
+}
+
+otelcol.receiver.otlp "default" {
+  http {
+    endpoint = "0.0.0.0:4320"
+  }
+
+  output {
+    traces = [otelcol.exporter.otlphttp.localhost_tempo.input]
+    logs    = [otelcol.processor.batch.default.input]
+  }
+}
+
+otelcol.processor.batch "default" {
+    output {
+	traces = [otelcol.exporter.otlphttp.localhost_tempo.input]
+        logs = [otelcol.exporter.otlphttp.otel_localhost_loki.input]
+    }
+}
+
+otelcol.exporter.otlphttp "otel_localhost_loki" {
+  client {
+    endpoint = "http://localhost:3100/otlp"
+  }
+}
+
+otelcol.connector.spanlogs "default" {
+  roots           = true
+  span_attributes = ["http.method", "http.target"]
+
+  output {
+    logs = [otelcol.exporter.loki.default.input]
+  }
+}
+
+otelcol.exporter.loki "default" {
+  forward_to = [loki.write.localhost_loki.receiver]
+}
+
+otelcol.exporter.otlphttp "localhost_tempo" {
+  client {
+    endpoint = "http://localhost:4318"
+   }
+}
+
